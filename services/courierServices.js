@@ -29,8 +29,18 @@ exports.findCourier = async (courierId) => {
   }
 };
 
+exports.getCourierData = async (courierId) => {
+  try {
+    const courier = await Courier.findById(courierId).populate("workingAreaId");
+    return courier;
+  } catch (err) {
+    throw new Error(err);
+  }
+};
+
 exports.editCourier = async (courierData) => {
   try {
+    console.log(courierData);
     const courier = await this.findCourier(courierData.courierId);
     courier.courierName =
       courierData.courierName !== ""
@@ -202,6 +212,9 @@ exports.deleteCourierTurn = async (courierId) => {
 exports.setCourierBusyStatus = async (courierId, state) => {
   try {
     const courierLog = await CourierLog.findOne({ courierId: courierId });
+    if (!courierLog) {
+      throw new Error("Courier has to login once at least!");
+    }
     courierLog.isBusy = state;
     await courierLog.save();
   } catch (err) {

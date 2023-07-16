@@ -23,6 +23,15 @@ exports.createUser = async (userData) => {
   }
 };
 
+exports.findDashboardUser = async (username) => {
+  try {
+    let user = await User.findOne({ username: username });
+    return user;
+  } catch (err) {
+    throw new Error(err);
+  }
+};
+
 exports.findUser = async (username) => {
   try {
     let user = await User.findOne({ username: username });
@@ -145,6 +154,10 @@ exports.getAreas = async () => {
 
 exports.deleteArea = async (areaId) => {
   try {
+    const couriers = await Courier.find({ workingAreaId: areaId });
+    if (couriers.length > 0) {
+      throw new Error("This area has couriers!");
+    }
     const deletedArea = await Area.findByIdAndDelete(areaId);
     if (deletedArea) {
       return true;
@@ -201,6 +214,10 @@ exports.updateShift = async (shiftId, shiftData) => {
 
 exports.deleteShift = async (shiftId) => {
   try {
+    const couriers = await Courier.find({ workingShiftId: shiftId });
+    if (couriers.length > 0) {
+      throw new Error("This shift has couriers!");
+    }
     const shiftDeleted = await Shift.findByIdAndDelete(shiftId);
     if (!shiftDeleted) {
       throw new Error("Could not delete shift!");

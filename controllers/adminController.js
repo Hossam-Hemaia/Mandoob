@@ -14,11 +14,17 @@ exports.postCreateUser = async (req, res, next) => {
       error.statusCode = 422;
       throw error;
     }
+    const userExist = await adminServices.findDashboardUser(phoneNumber);
+    if (userExist) {
+      throw new Error("User already exist!");
+    }
+    const validPhoneNumber = phoneNumber.split("-").join("");
+    console.log(validPhoneNumber);
     const hashedPassword = await bcrypt.hash(password, 12);
     const userData = {
       employeeName,
       phoneNumber,
-      username: phoneNumber,
+      username: validPhoneNumber,
       role,
       password: hashedPassword,
     };
@@ -168,7 +174,7 @@ exports.getAllCouriers = async (req, res, next) => {
 exports.getCourier = async (req, res, next) => {
   const courierId = req.query.courierId;
   try {
-    const courier = await courierServices.findCourier(courierId);
+    const courier = await courierServices.getCourierData(courierId);
     res.status(200).json({ success: true, courier: courier });
   } catch (err) {
     next(err);
@@ -336,7 +342,10 @@ exports.postCreateShift = async (req, res, next) => {
       error.statusCode = 422;
       throw error;
     }
-    const endingHour = shiftHours + startingHour;
+    const endingHour =
+      shiftHours + startingHour > 24
+        ? shiftHours + startingHour - 24
+        : shiftHours + startingHour;
     const endingMinute = startingMinute;
     const shiftData = {
       shiftHours,
@@ -379,7 +388,10 @@ exports.getShift = async (req, res, next) => {
 exports.editShift = async (req, res, next) => {
   try {
     const { shiftHours, startingHour, startingMinute, shiftId } = req.body;
-    const endingHour = shiftHours + startingHour;
+    const endingHour =
+      shiftHours + startingHour > 24
+        ? shiftHours + startingHour - 24
+        : shiftHours + startingHour;
     const endingMinute = startingMinute;
     const shiftData = {
       shiftHours,
