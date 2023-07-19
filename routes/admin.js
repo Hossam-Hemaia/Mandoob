@@ -48,7 +48,11 @@ router.put(
   adminController.putCourierBusyStatus
 );
 
-router.get("/courier/orders", isAuth.adminIsAuth, adminController.getCourierOrders)
+router.get(
+  "/courier/orders",
+  isAuth.adminIsAuth,
+  adminController.getCourierOrders
+);
 
 // AREAS ROUTES //
 
@@ -59,6 +63,12 @@ router.get("/get/areas", isAuth.adminIsAuth, adminController.getAreas);
 router.get("/get/area", isAuth.adminIsAuth, adminController.getArea);
 
 router.delete("/delete/area", isAuth.adminIsAuth, adminController.deleteArea);
+
+router.get(
+  "/cached/areas",
+  isAuth.adminIsAuth,
+  adminController.getAdjustedAreas
+);
 
 // SHIFTS ROUTES //
 
@@ -92,11 +102,19 @@ router.put("/edit/order", isAuth.adminIsAuth, adminController.putEditOrder);
 
 router.delete("/delete/order", isAuth.adminIsAuth, adminController.deleteOrder);
 
+router.get(
+  "/queued/orders",
+  isAuth.adminIsAuth,
+  adminController.getQueuedOrders
+);
+
 // PRICING ROUTES //
 
 router.post("/set/pricing", isAuth.adminIsAuth, adminController.postSetPricing);
 
 router.get("/get/pricing", adminController.getPrices);
+
+router.get("/prices/list", isAuth.adminIsAuth, adminController.getPricesList);
 
 module.exports = router;
 //complete creating couriers to receive orders

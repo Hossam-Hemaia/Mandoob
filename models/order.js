@@ -66,7 +66,7 @@ const orderSchema = new Schema(
       //cash or credit
       type: String,
     },
-    orderStatus: [{ state: { type: String }, date: { type: Date } }], //[pending, received, transporting, delivered or rejected]
+    orderStatus: [{ state: { type: String }, date: { type: Date } }], //[pending, accepted, received, transporting, delivered or rejected]
     serviceType: {
       type: String,
       required: true,

@@ -281,7 +281,7 @@ exports.postCreateArea = async (req, res, next) => {
     const areaData = {
       zoneName,
       areaName,
-      areaPolygon,
+      areaPolygon: JSON.parse(areaPolygon),
     };
     const area = await adminServices.createArea(areaData);
     if (!area) {
@@ -327,6 +327,15 @@ exports.deleteArea = async (req, res, next) => {
       error.statusCode = 422;
       throw error;
     }
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.getAdjustedAreas = async (req, res, next) => {
+  try {
+    const areas = await adminServices.cachedAreas();
+    res.status(200).json({ success: true, areas });
   } catch (err) {
     next(err);
   }
@@ -540,6 +549,15 @@ exports.deleteOrder = async (req, res, next) => {
   }
 };
 
+exports.getQueuedOrders = async (req, res, next) => {
+  try {
+    const orders = await orderServices.QueuedOrders();
+    res.status(200).json({ success: true, orders });
+  } catch (err) {
+    next(err);
+  }
+};
+
 // PRICING CONTROLLERS //
 
 exports.postSetPricing = async (req, res, next) => {
@@ -563,6 +581,15 @@ exports.getPrices = async (req, res, next) => {
   try {
     const pricingCategory = req.query.pricingCategory;
     const prices = await adminServices.getPricing(pricingCategory);
+    res.status(200).json({ success: true, prices: prices });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.getPricesList = async (req, res, next) => {
+  try {
+    const prices = await adminServices.pricesList();
     res.status(200).json({ success: true, prices: prices });
   } catch (err) {
     next(err);

@@ -58,6 +58,10 @@ cron.schedule("0 0 * * *", async () => {
   await utilities.adjustAreasPolygons();
 });
 
+cron.schedule("*/1 * * * *", async () => {
+  await socketController.sendCouriersLocations();
+});
+
 app.use((error, req, res, next) => {
   console.log(error);
   const status = error.statusCode || 500;

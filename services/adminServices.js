@@ -3,7 +3,7 @@ const Courier = require("../models/courier");
 const Area = require("../models/area");
 const Shift = require("../models/shift");
 const Pricing = require("../models/pricing");
-const pricing = require("../models/pricing");
+const rdsClient = require("../config/redisConnect");
 
 // USERS SERVICES //
 
@@ -169,6 +169,17 @@ exports.deleteArea = async (areaId) => {
   }
 };
 
+exports.cachedAreas = async ()=>{
+  try{
+    const cacheDB = rdsClient.getRedisConnection();
+    const areasData = await cacheDB.hGetAll("GEOMETRY");
+    const areas = JSON.parse(areasData.areas);
+    return areas; 
+  }catch(err){
+    throw new Error(err);
+  }
+}
+
 // SHIFTS SERVICES //
 
 exports.createShift = async (shiftData) => {
@@ -262,6 +273,18 @@ exports.getPricing = async (pricingCategory) => {
       throw new Error("Pricing is not set");
     }
     return pricing;
+  } catch (err) {
+    throw new Error(err);
+  }
+};
+
+exports.pricesList = async () => {
+  try {
+    const prices = await Pricing.find();
+    if (!prices) {
+      throw new Error("Prices list not found!");
+    }
+    return prices;
   } catch (err) {
     throw new Error(err);
   }

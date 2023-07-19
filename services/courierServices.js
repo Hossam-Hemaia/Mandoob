@@ -357,3 +357,15 @@ exports.getCourierOrders = async (courierId) => {
     throw new Error(err);
   }
 };
+
+exports.getCouriersLogs = async () => {
+  try {
+    const couriersLocations = await CourierLog.find(
+      { courierActive: true },
+      { courierName: 1, location: 1, hasFridge: 1, hasOrder: 1, isBusy: 1 }
+    );
+    return couriersLocations;
+  } catch (err) {
+    throw new Error(err);
+  }
+};

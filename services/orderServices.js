@@ -1,6 +1,7 @@
 const rdsClient = require("../config/redisConnect");
 const Order = require("../models/order");
 const utilities = require("../utils/utilities");
+const adminServices = require("../services/adminServices");
 const clientServices = require("../services/clientServices");
 const courierServices = require("../services/courierServices");
 const ObjectId = require("mongoose").Types.ObjectId;
@@ -54,7 +55,8 @@ exports.findAllOrders = async (page, ITEMS_PER_PAGE) => {
   try {
     const orders = await Order.find()
       .skip((page - 1) * ITEMS_PER_PAGE)
-      .limit(ITEMS_PER_PAGE);
+      .limit(ITEMS_PER_PAGE)
+      .sort({ orderType: -1 });
     if (!orders) {
       throw new Error("No orders found!");
     }
@@ -204,6 +206,26 @@ exports.deleteOrder = async (orderId) => {
     }
     return orderDeleted;
   } catch (err) {
-    next(err);
+    throw new Error(err);
+  }
+};
+
+exports.QueuedOrders = async () => {
+  try {
+    const cacheDB = rdsClient.getRedisConnection();
+    const areas = await adminServices.getAreas();
+    const queuedOrders = [];
+    for (let area of areas) {
+      const areaQueueLength = await cacheDB.lLen(`${area._id}`);
+      let areaDetails = {};
+      if (areaQueueLength > 0) {
+        areaDetails.areaName = area.areaName;
+        areaDetails.numberOfOrders = areaQueueLength;
+        queuedOrders.push(areaDetails);
+      }
+    }
+    return queuedOrders;
+  } catch (err) {
+    throw new Error(err);
   }
 };

@@ -120,8 +120,8 @@ exports.courierCurrentLocation = async (socket) => {
     socket.on("current_point", async (event) => {
       const { orderId, courierId, flag, location } = event;
       if (flag === "vacant") {
-        console.log("courier vacant");
         const courier = await courierServices.findCourier(courierId);
+        console.log(`courier ${courier.username} vacant`);
         const courierData = {
           location,
           courier,
@@ -253,5 +253,16 @@ exports.deleteCourierCache = async (socket) => {
     });
   } catch (err) {
     console.log(err);
+  }
+};
+
+exports.sendCouriersLocations = async () => {
+  try {
+    console.log("sending locations...");
+    const couriersLocations = await courierServices.getCouriersLogs();
+    const io = require("../socket").getIo();
+    io.emit("couriers_locations", { locations: couriersLocations });
+  } catch (err) {
+    throw new Error(err);
   }
 };
