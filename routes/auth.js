@@ -54,6 +54,6 @@ router.post("/user/login", authController.usersLogin);
 
 router.get("/get/verify/token", authController.getVerifyToken);
 
-router.post("/logout", authController.logout)
+router.post("/logout", authController.logout);
 
 module.exports = router;

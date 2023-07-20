@@ -249,9 +249,11 @@ exports.setCourierTimeout = async (courierId) => {
   try {
     const courier = await this.findCourier(courierId);
     const courierShift = await Shift.findById(courier.workingShiftId);
+    const nowHour = new Date().getHours();
+    const timeoutHours = courierShift.endingHour - nowHour;
     const timeoutId = setTimeout(async () => {
       await this.courierLogout(courierId);
-    }, courierShift.shiftHours * 60 * 60 * 1000);
+    }, timeoutHours * 60 * 60 * 1000 + courierShift.endingMinute * 60 * 1000);
     const shiftTimeout = new ShiftTimeout({
       courierId,
       timeoutId,
@@ -365,6 +367,39 @@ exports.getCouriersLogs = async () => {
       { courierName: 1, location: 1, hasFridge: 1, hasOrder: 1, isBusy: 1 }
     );
     return couriersLocations;
+  } catch (err) {
+    throw new Error(err);
+  }
+};
+
+exports.getAvailableCouriers = async (order) => {
+  try {
+    const orderLocation = {
+      type: "Point",
+      coordinates: [order.fromPoint.lat, order.fromPoint.lng],
+    };
+    if (order.vehicleType !== "car") {
+      const couriers = await CourierLog.find({
+        hasFridge: true,
+        hasOrder: false,
+        isBusy: false,
+        courierActive: true,
+        location: {
+          $near: { $geometry: orderLocation },
+        },
+      }).lean();
+      return couriers;
+    } else {
+      const couriers = await CourierLog.find({
+        hasOrder: false,
+        isBusy: false,
+        courierActive: true,
+        location: {
+          $near: { $geometry: orderLocation },
+        },
+      }).lean();
+      return couriers;
+    }
   } catch (err) {
     throw new Error(err);
   }

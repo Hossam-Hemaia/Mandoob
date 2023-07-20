@@ -54,6 +54,12 @@ router.get(
   adminController.getCourierOrders
 );
 
+router.get(
+  "/available/couriers",
+  isAuth.adminIsAuth,
+  adminController.getAvailableCouriers
+);
+
 // AREAS ROUTES //
 
 router.post("/create/area", isAuth.adminIsAuth, adminController.postCreateArea);

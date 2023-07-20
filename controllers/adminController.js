@@ -558,6 +558,20 @@ exports.getQueuedOrders = async (req, res, next) => {
   }
 };
 
+exports.getAvailableCouriers = async (req, res, next) => {
+  try {
+    const orderId = req.query.orderId;
+    const order = await orderServices.findOrder(orderId);
+    const couriers = await courierServices.getAvailableCouriers(order);
+    if (!couriers) {
+      throw new Error("All couriers are not available!");
+    }
+    res.status(200).json({ success: true, couriers });
+  } catch (err) {
+    next(err);
+  }
+};
+
 // PRICING CONTROLLERS //
 
 exports.postSetPricing = async (req, res, next) => {

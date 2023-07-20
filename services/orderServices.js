@@ -4,7 +4,6 @@ const utilities = require("../utils/utilities");
 const adminServices = require("../services/adminServices");
 const clientServices = require("../services/clientServices");
 const courierServices = require("../services/courierServices");
-const ObjectId = require("mongoose").Types.ObjectId;
 
 exports.createOrder = async (orderDetails) => {
   try {
@@ -187,8 +186,7 @@ exports.getOrderFromQueue = async (areaId) => {
 
 exports.updateOrderData = async (orderId, updateData) => {
   try {
-    const id = new ObjectId(orderId);
-    const orderUpdated = await Order.updateOne({ _id: id }, updateData);
+    const orderUpdated = await Order.findByIdAndUpdate(orderId, updateData);
     if (!orderUpdated) {
       throw new Error("Order update failed!");
     }

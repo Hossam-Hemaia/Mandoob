@@ -43,4 +43,6 @@ const courierLogSchema = new Schema(
   { timestamps: true }
 );
 
+courierLogSchema.index({ location: "2dsphere" });
+
 module.exports = mongoose.model("courierLog", courierLogSchema);
