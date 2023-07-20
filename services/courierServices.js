@@ -134,12 +134,12 @@ exports.createCourierLog = async (courierData) => {
 exports.updateCourierLog = async (courierData) => {
   try {
     const filter = { courierId: courierData.courierId };
-    const updateData = {
-      location: courierData.location,
-      openDate: courierData.openDate,
-      courierActive: courierData.courierActive,
-      hasFridge: courierData.hasFridge,
-    };
+    const updateData = {};
+    for (let key in courierData) {
+      if (courierData[key] !== "" && key !== "courierId") {
+        updateData[key] = courierData[key];
+      }
+    }
     await CourierLog.updateOne(filter, updateData);
   } catch (err) {
     throw new Error(err);

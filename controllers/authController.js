@@ -4,7 +4,6 @@ const { validationResult } = require("express-validator");
 const Client = require("../models/client");
 const adminServices = require("../services/adminServices");
 const courierServices = require("../services/courierServices");
-const orderServices = require("../services/orderServices");
 const utilities = require("../utils/utilities");
 
 exports.postCreatAccount = async (req, res, next) => {
@@ -179,5 +178,24 @@ exports.getVerifyToken = async (req, res, next) => {
       decodedToken: decodedToken,
       admin,
     });
+  }
+};
+
+exports.logout = async (req, res, next) => {
+  try {
+    const courierId = req.body.courierId;
+    const { courierLog } = await courierServices.findCourierLog(courierId);
+    if (courierLog.hasOrder) {
+      throw new Error("You still have unsubmitted order!");
+    }
+    const courierData = {
+      courierId: courierId,
+      courierActive: false,
+    };
+    await courierServices.updateCourierLog(courierData);
+    await courierServices.deleteCourierTurn(courierId);
+    res.status(200).json({ success: true, message: "Courier Logged out" });
+  } catch (err) {
+    next(err);
   }
 };
