@@ -193,6 +193,7 @@ exports.puteditCourier = async (req, res, next) => {
     plateNumber,
     workingAreaId,
     workingShiftId,
+    password,
     courierId,
   } = req.body;
   try {
@@ -203,6 +204,7 @@ exports.puteditCourier = async (req, res, next) => {
         documents.push(`${baseUrl}/${file.path}`);
       }
     }
+    const newPassword = await bcrypt.hash(password, 12);
     const courierData = {
       courierName,
       birthdate: new Date(birthdate),
@@ -215,6 +217,7 @@ exports.puteditCourier = async (req, res, next) => {
       documents: documents,
       workingAreaId,
       workingShiftId,
+      password: password !== "" ? newPassword : "",
       courierId,
     };
     await courierServices.editCourier(courierData);
@@ -278,6 +281,7 @@ exports.getCourierOrders = async (req, res, next) => {
 exports.postCreateArea = async (req, res, next) => {
   const { zoneName, areaName, areaPolygon } = req.body;
   try {
+    console.log(areaPolygon, zoneName);
     const areaData = {
       zoneName,
       areaName,
@@ -561,6 +565,7 @@ exports.getQueuedOrders = async (req, res, next) => {
 exports.getAvailableCouriers = async (req, res, next) => {
   try {
     const orderId = req.query.orderId;
+    console.log(orderId);
     const order = await orderServices.findOrder(orderId);
     const couriers = await courierServices.getAvailableCouriers(order);
     if (!couriers) {

@@ -11,12 +11,39 @@ exports.findClient = async (clientId) => {
   }
 };
 
+exports.findClientByPhoneNumber = async (phoneNumber) => {
+  try {
+    const client = await Client.findOne({ phoneNumber });
+    if (!client) {
+      throw new Error("Phone number is not registered!");
+    }
+    return client;
+  } catch (err) {
+    throw new Error(err);
+  }
+};
+
+exports.updateClient = async (phoneNumber, clientData) => {
+  try {
+    const updatedClient = await Client.updateOne(
+      { phoneNumber: phoneNumber },
+      clientData
+    );
+    if (updatedClient) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (err) {
+    throw new Error(err);
+  }
+};
+
 exports.findCourier = async (areaId, needFridge) => {
   try {
     const couriers = await ZoneData.find({ areaId: areaId });
     let selectedCourier;
     for (let courier of couriers) {
-      console.log(needFridge);
       let courierLog = await CourierLog.findOne({
         courierId: courier.courierId,
         courierActive: true,

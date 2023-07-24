@@ -4,6 +4,7 @@ const { validationResult } = require("express-validator");
 const Client = require("../models/client");
 const adminServices = require("../services/adminServices");
 const courierServices = require("../services/courierServices");
+const clientServices = require("../services/clientServices");
 const utilities = require("../utils/utilities");
 
 exports.postCreatAccount = async (req, res, next) => {
@@ -195,6 +196,39 @@ exports.logout = async (req, res, next) => {
     await courierServices.updateCourierLog(courierData);
     await courierServices.deleteCourierTurn(courierId);
     res.status(200).json({ success: true, message: "Courier Logged out" });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.getVerifyPhoneNumber = async (req, res, next) => {
+  try {
+    const phoneNumber = req.query.phoneNumber;
+    const client = await clientServices.findClientByPhoneNumber(phoneNumber);
+    if (client) {
+      res.status(200).json({ success: true, message: "Phone number exist" });
+    }
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.putResetPassword = async (req, res, next) => {
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty() && errors.array()[0].msg !== "Invalid value") {
+      const errorMsg = new Error(errors.array()[0].msg);
+      errorMsg.statusCode = 422;
+      throw errorMsg;
+    }
+    const { phoneNumber, password } = req.body;
+    const hashedPassword = await bcrypt.hash(password, 12);
+    const clientData = { password: hashedPassword };
+    const updated = await clientServices.updateClient(phoneNumber, clientData);
+    if (!updated) {
+      throw new Error("Update Failed!");
+    }
+    res.status(200).json({ success: true, message: "Update succeeded!" });
   } catch (err) {
     next(err);
   }

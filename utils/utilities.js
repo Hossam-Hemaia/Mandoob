@@ -133,6 +133,7 @@ exports.getLocalDate = (date) => {
   const localDate = new Date(
     newDate.getTime() - newDate.getTimezoneOffset() * 60000
   );
+  console.log(localDate);
   return localDate;
 };
 

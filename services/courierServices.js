@@ -80,6 +80,8 @@ exports.editCourier = async (courierData) => {
       courierData.workingShiftId !== ""
         ? courierData.workingShiftId
         : courier.workingShiftId;
+    courier.password =
+      courierData.password !== "" ? courierData.password : courier.password;
     await courier.save();
     return true;
   } catch (err) {

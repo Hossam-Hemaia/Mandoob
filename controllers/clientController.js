@@ -3,7 +3,6 @@ const orderServices = require("../services/orderServices");
 const courierServices = require("../services/courierServices");
 const adminServices = require("../services/adminServices");
 const utilities = require("../utils/utilities");
-const rdsClient = require("../config/redisConnect");
 
 exports.getDeliveryData = async (req, res, next) => {
   const {
@@ -12,7 +11,6 @@ exports.getDeliveryData = async (req, res, next) => {
     toPointLat,
     toPointLng,
     pricingCategory,
-    clientType,
   } = req.query;
   try {
     const fromPoint = { lat: fromPointLat, lng: fromPointLng };
@@ -82,20 +80,20 @@ exports.postCreateOrder = async (req, res, next) => {
     const client = await clientServices.findClient(req.clientId);
     let parcelImage;
     let attachments = [];
-    if (serviceType === "individual") {
-      const image = req.files[0];
-      if (image) {
-        parcelImage = `${req.protocol}s://${req.get("host")}/${image.path}`;
-      }
-    } else if (serviceType === "mandoobk") {
-      const files = req.files;
-      if (files) {
-        for (let file of files) {
-          let document = `${req.protocol}s://${req.get("host")}/${file.path}`;
-          attachments.push(document);
-        }
-      }
-    }
+    // if (serviceType === "individual") {
+    //   const image = req.files[0];
+    //   if (image) {
+    //     parcelImage = `${req.protocol}s://${req.get("host")}/${image.path}`;
+    //   }
+    // } else if (serviceType === "task") {
+    //   const files = req.files;
+    //   if (files) {
+    //     for (let file of files) {
+    //       let document = `${req.protocol}s://${req.get("host")}/${file.path}`;
+    //       attachments.push(document);
+    //     }
+    //   }
+    // }
     const orderDetails = {
       fromAddress,
       toAddress,
@@ -114,6 +112,7 @@ exports.postCreateOrder = async (req, res, next) => {
       payer,
       paymentStatus: paymentType === "cash" ? "pending" : "paid",
       paymentType,
+      serviceType,
       orderType,
       orderDate:
         orderType === "instant"
