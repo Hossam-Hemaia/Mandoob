@@ -202,3 +202,13 @@ exports.getClientOrders = async (req, res, next) => {
     next(err);
   }
 };
+
+exports.deleteClientAccount = async (req, ree, next) => {
+  try {
+    const clientId = req.clientId;
+    await clientServices.deleteClientAccount(clientId);
+    res.status(200).json({ success: true, message: "Account deleted!" });
+  } catch (err) {
+    next(err);
+  }
+};

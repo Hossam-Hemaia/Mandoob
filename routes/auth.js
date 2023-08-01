@@ -72,4 +72,6 @@ router.put(
   authController.putResetPassword
 );
 
+// continue creating delete accounts
+
 module.exports = router;

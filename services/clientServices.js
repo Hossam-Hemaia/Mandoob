@@ -61,3 +61,12 @@ exports.findCourier = async (areaId, needFridge) => {
     throw new Error(err);
   }
 };
+
+exports.deleteClientAccount = async (clientId) => {
+  try {
+    await Client.findByIdAndDelete(clientId);
+    return true;
+  } catch (err) {
+    throw new Error(err);
+  }
+};
