@@ -108,6 +108,7 @@ exports.assignOrder = async (orderId, courier) => {
     const order = await Order.findById(orderId).populate("clientId");
     order.orderStatus.push({ state: "accepted", date: currentDate });
     order.courierId = courier._id;
+    order.orderType = "instant";
     await order.save();
     return order;
   } catch (err) {

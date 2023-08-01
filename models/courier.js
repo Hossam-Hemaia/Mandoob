@@ -41,6 +41,10 @@ const courierSchema = new Schema(
       ref: "shift",
       required: true,
     },
+    courierLogId: {
+      type: Schema.Types.ObjectId,
+      ref: "courierLog",
+    },
     hasFridge: {
       type: Boolean,
       default: false,

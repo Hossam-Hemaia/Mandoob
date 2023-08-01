@@ -13,6 +13,7 @@ exports.findAllCouriers = async () => {
     const couriers = await Courier.find().populate([
       "workingAreaId",
       "workingShiftId",
+      "courierLogId",
     ]);
     return couriers;
   } catch (err) {
@@ -127,6 +128,9 @@ exports.createCourierLog = async (courierData) => {
   try {
     const courierLog = new CourierLog(courierData);
     await courierLog.save();
+    const courier = await this.findCourier(courierData.courierId);
+    courier.courierLogId = courierLog._id;
+    await courier.save();
     return courierLog;
   } catch (err) {
     throw new Error(err);
@@ -384,7 +388,6 @@ exports.getAvailableCouriers = async (order) => {
       const couriers = await CourierLog.find({
         hasFridge: true,
         hasOrder: false,
-        isBusy: false,
         courierActive: true,
         location: {
           $near: { $geometry: orderLocation },

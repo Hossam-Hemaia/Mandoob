@@ -565,7 +565,6 @@ exports.getQueuedOrders = async (req, res, next) => {
 exports.getAvailableCouriers = async (req, res, next) => {
   try {
     const orderId = req.query.orderId;
-    console.log(orderId);
     const order = await orderServices.findOrder(orderId);
     const couriers = await courierServices.getAvailableCouriers(order);
     if (!couriers) {

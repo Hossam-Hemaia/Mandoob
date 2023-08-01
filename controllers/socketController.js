@@ -42,6 +42,7 @@ exports.assigneOrder = async (socket) => {
 exports.courierAccepted = async (socket) => {
   try {
     socket.on("courier_accepted", async (event) => {
+      const io = require("../socket").getIo();
       const { courierId, orderId } = event;
       console.log("courier accepted..", courierId, orderId);
       const courier = await courierServices.assignCourier(courierId);
@@ -54,6 +55,7 @@ exports.courierAccepted = async (socket) => {
         order: order,
         message: "Order Assigned to courier",
       });
+      io.emit("courier_assigned", { orderId: orderId });
     });
   } catch (err) {
     console.log(err);
@@ -63,12 +65,17 @@ exports.courierAccepted = async (socket) => {
 exports.courierDeclined = async (socket) => {
   try {
     socket.on("courier_declined", async (event) => {
+      const io = require("../socket").getIo();
       const { courierId, orderId, reason } = event;
       // const courier = await courierServices.findCourier(courierId);
       // const order = await orderServices.findOrder(orderId);
       await courierServices.setCourierBusyStatus(courierId, true);
       await courierServices.courierRejection(courierId, orderId, reason);
       await courierServices.deleteCourierTurn(courierId);
+      io.emit("courier_refused", {
+        orderId: orderId,
+        message: "Courier refused to receive the order",
+      });
       // const nextCourier = await clientServices.findCourier(
       //   courier.workingAreaId
       // );
