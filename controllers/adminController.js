@@ -226,7 +226,7 @@ exports.puteditCourier = async (req, res, next) => {
     next(err);
   }
 };
-
+// Deleting Courier
 exports.deleteCourier = async (req, res, next) => {
   const courierId = req.query.courierId;
   try {

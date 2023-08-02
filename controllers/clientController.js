@@ -203,7 +203,7 @@ exports.getClientOrders = async (req, res, next) => {
   }
 };
 
-exports.deleteClientAccount = async (req, ree, next) => {
+exports.deleteClientAccount = async (req, res, next) => {
   try {
     const clientId = req.clientId;
     await clientServices.deleteClientAccount(clientId);

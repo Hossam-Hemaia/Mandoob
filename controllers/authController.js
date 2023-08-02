@@ -233,8 +233,3 @@ exports.putResetPassword = async (req, res, next) => {
     next(err);
   }
 };
-
-exports.deleteCourierAccount = async (req, res, next)=>{
-  const courierId = req.query.courierId;
-  
-}

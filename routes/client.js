@@ -23,4 +23,10 @@ router.get(
   clientController.getClientOrders
 );
 
+router.delete(
+  "/delete/client/account",
+  isAuth.clientIsAuth,
+  clientController.deleteClientAccount
+);
+
 module.exports = router;

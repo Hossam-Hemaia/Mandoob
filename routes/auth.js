@@ -2,7 +2,9 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 const Client = require("../models/client");
 const authController = require("../controllers/authController");
+const adminController = require("../controllers/adminController");
 const validator = require("../validator/inputValidator");
+const isAuth = require("../validator/isAuth");
 
 const router = express.Router();
 
@@ -72,6 +74,11 @@ router.put(
   authController.putResetPassword
 );
 
-// continue creating delete accounts
+// Removing courier account endpoint
+router.delete(
+  "/remove/courier/account",
+  isAuth.courierIsAuth,
+  adminController.deleteCourier
+);
 
 module.exports = router;

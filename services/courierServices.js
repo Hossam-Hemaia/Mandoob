@@ -409,12 +409,3 @@ exports.getAvailableCouriers = async (order) => {
     throw new Error(err);
   }
 };
-
-exports.deleteCourierAccount = async (courierId) => {
-  try {
-    await Courier.findByIdAndDelete(courierId);
-    return res.status(200).json({ success: tru });
-  } catch (err) {
-    throw new Error(err);
-  }
-};

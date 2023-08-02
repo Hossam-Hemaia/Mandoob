@@ -62,6 +62,7 @@ exports.findCourier = async (areaId, needFridge) => {
   }
 };
 
+// Delete Client Account
 exports.deleteClientAccount = async (clientId) => {
   try {
     await Client.findByIdAndDelete(clientId);
