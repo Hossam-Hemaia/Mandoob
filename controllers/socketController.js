@@ -48,13 +48,6 @@ exports.courierAccepted = async (socket) => {
       const courier = await courierServices.assignCourier(courierId);
       const order = await orderServices.assignOrder(orderId, courier);
       await courierServices.deleteCourierTurn(courierId);
-      const clientSocket = await utilities.getSocketId(
-        order.clientId.phoneNumber
-      );
-      socket.to(clientSocket).emit("courier_answered", {
-        order: order,
-        message: "Order Assigned to courier",
-      });
       io.emit("courier_assigned", { orderId: orderId });
     });
   } catch (err) {
@@ -105,8 +98,13 @@ exports.courierDeclined = async (socket) => {
 
 exports.courierApology = async (socket) => {
   socket.on("courier_apology", async (event) => {
+    const io = require("../socket").getIo();
     const { courierId, orderId, reason } = event;
     await courierServices.courierRejection(courierId, orderId, reason);
+    io.emit("courier_refused", {
+      orderId: orderId,
+      message: "Courier refused to receive the order",
+    });
   });
 };
 
@@ -205,19 +203,8 @@ exports.courierDeliveredOrder = async (socket) => {
       console.log("order delivered");
       const { orderId, courierId, status } = event;
       await orderServices.updateOrderStatus(orderId, status);
-      const order = await orderServices.findOrder(orderId);
-      const clientSocket = await utilities.getSocketId(
-        order.clientId.phoneNumber
-      );
       if (status === "delivered") {
         await courierServices.setCourierOrderStatus(courierId, false);
-        socket.to(clientSocket).emit("order_delivered", {
-          message: "Order has been delivered to the receiver",
-        });
-      } else if (status === "rejected") {
-        socket.to(clientSocket).emit("order_rejected", {
-          message: "Order has been rejected by receiver",
-        });
       }
     });
   } catch (err) {

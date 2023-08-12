@@ -7,6 +7,7 @@ const courierServices = require("../services/courierServices");
 
 exports.createOrder = async (orderDetails) => {
   try {
+    console.log(orderDetails);
     const currentDate = utilities.getLocalDate(new Date());
     const order = new Order({
       fromAddress: orderDetails.fromAddress,
@@ -19,7 +20,7 @@ exports.createOrder = async (orderDetails) => {
         lat: orderDetails.toPoint.lat,
         lng: orderDetails.toPoint.lng,
       },
-      parcelImage: orderDetails.parcelImage,
+      parcelImage: orderDetails.parcelImage || "",
       attachment: orderDetails.attachment,
       parcelName: orderDetails.parcelName,
       parcelType: orderDetails.parcelType,
@@ -150,6 +151,15 @@ exports.checkAcceptingOrder = async (areaId, orderId, oldCourierSocket) => {
       if (!nextCourier) {
         this.pushOrderToQueue(areaId, orderId);
         io.to(oldCourierSocket).emit("order_timed_out", { timeout: true });
+        io.emit(
+          "no_response",
+          {
+            message: "Courier did not take any action, order set to queue!",
+          },
+          (ack) => {
+            console.log(ack);
+          }
+        );
         return;
       }
       const courierSocket = await utilities.getSocketId(nextCourier.username);

@@ -193,7 +193,6 @@ exports.puteditCourier = async (req, res, next) => {
     plateNumber,
     workingAreaId,
     workingShiftId,
-    password,
     courierId,
   } = req.body;
   try {
@@ -204,7 +203,6 @@ exports.puteditCourier = async (req, res, next) => {
         documents.push(`${baseUrl}/${file.path}`);
       }
     }
-    const newPassword = await bcrypt.hash(password, 12);
     const courierData = {
       courierName,
       birthdate: new Date(birthdate),
@@ -217,7 +215,6 @@ exports.puteditCourier = async (req, res, next) => {
       documents: documents,
       workingAreaId,
       workingShiftId,
-      password: password !== "" ? newPassword : "",
       courierId,
     };
     await courierServices.editCourier(courierData);

@@ -41,7 +41,6 @@ exports.getCourierData = async (courierId) => {
 
 exports.editCourier = async (courierData) => {
   try {
-    console.log(courierData);
     const courier = await this.findCourier(courierData.courierId);
     courier.courierName =
       courierData.courierName !== ""
@@ -81,8 +80,6 @@ exports.editCourier = async (courierData) => {
       courierData.workingShiftId !== ""
         ? courierData.workingShiftId
         : courier.workingShiftId;
-    courier.password =
-      courierData.password !== "" ? courierData.password : courier.password;
     await courier.save();
     return true;
   } catch (err) {

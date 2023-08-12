@@ -81,16 +81,20 @@ exports.postCreateOrder = async (req, res, next) => {
     let parcelImage;
     let attachments = [];
     // if (serviceType === "individual") {
-    //   const image = req.files[0];
-    //   if (image) {
-    //     parcelImage = `${req.protocol}s://${req.get("host")}/${image.path}`;
+    //   if (req.files.length > 0) {
+    //     const image = req.files[0];
+    //     if (image) {
+    //       parcelImage = `${req.protocol}s://${req.get("host")}/${image.path}`;
+    //     }
     //   }
     // } else if (serviceType === "task") {
-    //   const files = req.files;
-    //   if (files) {
-    //     for (let file of files) {
-    //       let document = `${req.protocol}s://${req.get("host")}/${file.path}`;
-    //       attachments.push(document);
+    //   if (req.files.length > 0) {
+    //     const files = req.files;
+    //     if (files) {
+    //       for (let file of files) {
+    //         let document = `${req.protocol}s://${req.get("host")}/${file.path}`;
+    //         attachments.push(document);
+    //       }
     //     }
     //   }
     // }
