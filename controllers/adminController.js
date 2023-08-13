@@ -610,3 +610,83 @@ exports.getPricesList = async (req, res, next) => {
     next(err);
   }
 };
+
+// Food Zone Controllers //
+
+exports.createFoodZone = async (req, res, next) => {
+  try {
+    const { zoneName, location } = req.body;
+    const foodZoneData = {
+      zoneName,
+      location,
+    };
+    const foodZone = await adminServices.createFoodZone(foodZoneData);
+    if (foodZone) {
+      return res
+        .status(201)
+        .json({ success: true, message: "New food zone created!" });
+    }
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.getFoodZones = async (req, res, next) => {
+  try {
+    const foodZones = await adminServices.foodZones();
+    res.status(200).json({ success: true, foodZones });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.deleteFoodZone = async (req, res, next) => {
+  try {
+    const foodZoneId = req.query.foodZoneId;
+    const foodZoneDeleted = await adminServices.deleteFoodZone(foodZoneId);
+    if (foodZoneDeleted) {
+      return res
+        .status(200)
+        .json({ success: true, message: "Food zone deleted!" });
+    }
+  } catch (err) {
+    next(err);
+  }
+};
+
+// Farm Controllers //
+
+exports.postCreateFarm = async (req, res, next) => {
+  try {
+    const { farmName, foodZoneId } = req.body;
+    const farmData = {
+      farmName,
+      foodZoneId,
+    };
+    const farm = await adminServices.createFarm(farmData);
+    if (farm) {
+      return res.status(201).json({ success: true, message: "Farm Created!" });
+    }
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.getFarms = async (req, res, next) => {
+  try {
+    const farms = await adminServices.allFarms();
+    res.status(200).json({ success: true, farms });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.getFarm = async (req, res, next) => {
+  try {
+    const farmId = req.query.farmId;
+    const farm = await adminServices.getFarm(farmId);
+    res.status(200).json({ success: true, farm });
+  } catch (err) {
+    next(err);
+  }
+};

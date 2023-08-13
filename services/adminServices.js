@@ -3,6 +3,8 @@ const Courier = require("../models/courier");
 const Area = require("../models/area");
 const Shift = require("../models/shift");
 const Pricing = require("../models/pricing");
+const FoodZone = require("../models/foodZone");
+const Farm = require("../models/farm");
 const rdsClient = require("../config/redisConnect");
 
 // USERS SERVICES //
@@ -169,16 +171,16 @@ exports.deleteArea = async (areaId) => {
   }
 };
 
-exports.cachedAreas = async ()=>{
-  try{
+exports.cachedAreas = async () => {
+  try {
     const cacheDB = rdsClient.getRedisConnection();
     const areasData = await cacheDB.hGetAll("GEOMETRY");
     const areas = JSON.parse(areasData.areas);
-    return areas; 
-  }catch(err){
+    return areas;
+  } catch (err) {
     throw new Error(err);
   }
-}
+};
 
 // SHIFTS SERVICES //
 
@@ -287,5 +289,68 @@ exports.pricesList = async () => {
     return prices;
   } catch (err) {
     throw new Error(err);
+  }
+};
+
+// Food Zone Services //
+
+exports.createFoodZone = async (foodZoneData) => {
+  try {
+    const foodZone = new FoodZone(foodZoneData);
+    await foodZone.save();
+    return foodZone;
+  } catch (err) {
+    throw new Error(err);
+  }
+};
+
+exports.foodZones = async () => {
+  try {
+    const foodZones = await FoodZone.find();
+    return foodZones;
+  } catch (err) {
+    throw new Error(err);
+  }
+};
+
+exports.deleteFoodZone = async (foodZoneId) => {
+  try {
+    await FoodZone.findByIdAndDelete(foodZoneId);
+    return true;
+  } catch (err) {
+    throw new Error(err);
+  }
+};
+
+// Farms Services //
+
+exports.createFarm = async (farmData) => {
+  try {
+    const farm = new Farm(farmData);
+    await farm.save();
+    return farm;
+  } catch (err) {
+    throw new Error(err);
+  }
+};
+
+exports.allFarms = async () => {
+  try {
+    const farms = await Farm.find();
+    return farms;
+  } catch (err) {
+    throw new Error(err);
+  }
+};
+
+exports.getFarm = async (farmId) => {
+  try {
+    const farm = await Farm.findById(farmId);
+    if (!farm) {
+      throw new Error("No famr found!");
+    }
+    return farm;
+  } catch (err) {
+    next(err);
   }
 };

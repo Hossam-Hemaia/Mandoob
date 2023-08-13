@@ -122,5 +122,34 @@ router.get("/get/pricing", adminController.getPrices);
 
 router.get("/prices/list", isAuth.adminIsAuth, adminController.getPricesList);
 
+// Food Zone Routes //
+
+router.post(
+  "/create/food/zone",
+  isAuth.adminIsAuth,
+  adminController.createFoodZone
+);
+
+router.get("/food/zones", isAuth.adminIsAuth, adminController.getFoodZones);
+
+router.delete(
+  "/delete/food/zone",
+  isAuth.adminIsAuth,
+  adminController.deleteFoodZone
+);
+
+// Farm Routes //
+
+router.post("/create/farm", isAuth.adminIsAuth, adminController.postCreateFarm);
+
+router.get("/farms", isAuth.adminIsAuth, adminController.getFarms);
+
+router.get("/farm/detail", isAuth.adminIsAuth, adminController.getFarm);
+
+/* 
+  - delete farm endpoint
+  - create food items schema
+  - crud for food items
+*/
+
 module.exports = router;
-//complete creating couriers to receive orders
