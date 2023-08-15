@@ -690,3 +690,102 @@ exports.getFarm = async (req, res, next) => {
     next(err);
   }
 };
+
+exports.deleteFarm = async (req, res, next) => {
+  try {
+    const farmId = req.query.farmId;
+    await adminServices.deleteFarm(farmId);
+    res.status(200).json({ success: true, message: "Farm Deleted!" });
+  } catch (err) {
+    next(err);
+  }
+};
+
+// Farm Items Controllers //
+
+exports.postCreateFarmItem = async (req, res, next) => {
+  try {
+    const { itemName, pricingSystem, itemPrice, farmId, itemBlocked } =
+      req.body;
+    let itemImage;
+    if (req.files.length > 0) {
+      const image = req.files[0];
+      if (image) {
+        itemImage = `${req.protocol}s://${req.get("host")}/${image.path}`;
+      }
+    }
+    const itemData = {
+      itemName,
+      pricingSystem,
+      itemPrice,
+      itemImage,
+      farmId,
+      itemBlocked,
+    };
+    const item = await adminServices.createItem(itemData);
+    if (item) {
+      return res.status(201).json({ success: true, message: "Item Created!" });
+    }
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.getFarmItems = async (req, res, next) => {
+  try {
+    const items = await adminServices.getFarmsItems();
+    res.status(200).json({ success: true, items });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.getItem = async (req, res, next) => {
+  try {
+    const itemId = req.query.itemId;
+    const item = await adminServices.getFarmItem(itemId);
+    res.status(200).json({ success: true, item });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.putEditFarmItem = async (req, res, next) => {
+  try {
+    const { itemName, pricingSystem, itemPrice, farmId, itemBlocked, itemId } =
+      req.body;
+    let itemImage = "";
+    if (req.files.length > 0) {
+      const image = req.files[0];
+      if (image) {
+        itemImage = `${req.protocol}s://${req.get("host")}/${image.path}`;
+      }
+    }
+    const itemData = {
+      itemName,
+      pricingSystem,
+      itemPrice,
+      itemImage,
+      farmId,
+      itemBlocked,
+    };
+    const updated = await adminServices.editItem(itemId, itemData);
+    if (updated) {
+      return res.status(200).json({ success: true, message: "item updated" });
+    }
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.deleteItem = async (req, res, next) => {
+  try {
+    const itemId = req.query.itemId;
+    const deleted = await adminServices.deleteItem(itemId);
+    if (deleted) {
+      return res.status(200).json({ success: true, message: "item deleted!" });
+    }
+  } catch (err) {
+    next(err);
+  }
+};

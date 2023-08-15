@@ -5,6 +5,7 @@ const Shift = require("../models/shift");
 const Pricing = require("../models/pricing");
 const FoodZone = require("../models/foodZone");
 const Farm = require("../models/farm");
+const Item = require("../models/item");
 const rdsClient = require("../config/redisConnect");
 
 // USERS SERVICES //
@@ -352,5 +353,68 @@ exports.getFarm = async (farmId) => {
     return farm;
   } catch (err) {
     next(err);
+  }
+};
+
+exports.deleteFarm = async (farmId) => {
+  try {
+    await Farm.findByIdAndDelete(farmId);
+    return true;
+  } catch (err) {
+    throw new Error(err);
+  }
+};
+
+// Farm Item Services //
+
+exports.createItem = async (itemData) => {
+  try {
+    const item = new Item(itemData);
+    await item.save();
+    return item;
+  } catch (err) {
+    throw new Error(err);
+  }
+};
+
+exports.getFarmsItems = async () => {
+  try {
+    const items = await Item.find();
+    return items;
+  } catch (err) {
+    throw new Error(err);
+  }
+};
+
+exports.getFarmItem = async (itemId) => {
+  try {
+    const item = await Item.findById(itemId);
+    return item;
+  } catch (err) {
+    throw new Error(err);
+  }
+};
+
+exports.editItem = async (itemId, itemData) => {
+  try {
+    const updateData = {};
+    for (let key in itemData) {
+      if (itemData[key] !== "") {
+        updateData[key] = itemData[key];
+      }
+    }
+    const updated = await Item.findByIdAndUpdate(itemId, updateData);
+    return updated;
+  } catch (err) {
+    throw new Error(err);
+  }
+};
+
+exports.deleteItem = async (itemId) => {
+  try {
+    const deleted = await Item.findByIdAndDelete(itemId);
+    return deleted;
+  } catch (err) {
+    throw new Error(err);
   }
 };

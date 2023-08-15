@@ -146,10 +146,26 @@ router.get("/farms", isAuth.adminIsAuth, adminController.getFarms);
 
 router.get("/farm/detail", isAuth.adminIsAuth, adminController.getFarm);
 
-/* 
-  - delete farm endpoint
-  - create food items schema
-  - crud for food items
-*/
+router.delete("/delete/farm", isAuth.adminIsAuth, adminController.deleteFarm);
+
+// Farm Items Routes //
+
+router.post(
+  "/create/farm/item",
+  isAuth.adminIsAuth,
+  adminController.postCreateFarmItem
+);
+
+router.get("/farms/items", isAuth.adminIsAuth, adminController.getFarmItems);
+
+router.get("/get/item", isAuth.adminIsAuth, adminController.getItem);
+
+router.put(
+  "/edit/farm/item",
+  isAuth.adminIsAuth,
+  adminController.putEditFarmItem
+);
+
+router.delete("/delete/item", isAuth.adminIsAuth, adminController.deleteItem);
 
 module.exports = router;
