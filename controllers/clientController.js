@@ -216,3 +216,49 @@ exports.deleteClientAccount = async (req, res, next) => {
     next(err);
   }
 };
+
+exports.getFarmsItems = async (req, res, next) => {
+  try {
+    const items = await adminServices.getFarmsItems();
+    res.status(200).json({ success: true, items });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.getLimitedFarmsItems = async (req, res, next) => {
+  try {
+    const items = await adminServices.getLimitedFarmsItems();
+    res.status(200).json({ success: true, items });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.getAllFarms = async (req, res, next) => {
+  try {
+    const farms = await adminServices.allFarms();
+    res.status(200).json({ success: true, farms });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.getFarmItems = async (req, res, next) => {
+  try {
+    const farmId = req.query.farmId;
+    const farmItems = await adminServices.getItemsByFarmId(farmId);
+    res.status(200).json({ success: true, farmItems });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.getFoodZoneLocation = async (req, res, next) => {
+  try {
+    const location = await utilities.getFarmsFoodPoint();
+    res.status(200).json({ success: true, location });
+  } catch (err) {
+    next(err);
+  }
+};

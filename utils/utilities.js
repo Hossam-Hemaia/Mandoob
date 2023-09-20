@@ -2,6 +2,7 @@ const axios = require("axios");
 const geolib = require("geolib");
 const Area = require("../models/area");
 const rdsClient = require("../config/redisConnect");
+const FoodZone = require("../models/foodZone");
 
 exports.getDeliveryRoute = async (locations, instructions) => {
   const response = await axios.post(
@@ -21,6 +22,15 @@ exports.getDeliveryRoute = async (locations, instructions) => {
   );
   const data = await response.data;
   return data;
+};
+
+exports.getFarmsFoodPoint = async () => {
+  try {
+    const foodZone = await FoodZone.findOne();
+    return foodZone.location;
+  } catch (err) {
+    throw new Error(err);
+  }
 };
 
 exports.checkShiftTime = (

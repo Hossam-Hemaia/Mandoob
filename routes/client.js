@@ -29,4 +29,26 @@ router.delete(
   clientController.deleteClientAccount
 );
 
+router.get(
+  "/food/zone/location",
+  isAuth.clientIsAuth,
+  clientController.getFoodZoneLocation
+);
+
+router.get(
+  "/all/farms/items",
+  isAuth.clientIsAuth,
+  clientController.getFarmsItems
+);
+
+router.get(
+  "/limited/farms/items",
+  isAuth.clientIsAuth,
+  clientController.getLimitedFarmsItems
+);
+
+router.get("/farms", isAuth.clientIsAuth, clientController.getAllFarms);
+
+router.get("/farm/items", isAuth.clientIsAuth, clientController.getFarmItems);
+
 module.exports = router;

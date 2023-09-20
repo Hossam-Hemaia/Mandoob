@@ -352,7 +352,7 @@ exports.getFarm = async (farmId) => {
     }
     return farm;
   } catch (err) {
-    next(err);
+    throw new Error(err);
   }
 };
 
@@ -379,7 +379,16 @@ exports.createItem = async (itemData) => {
 
 exports.getFarmsItems = async () => {
   try {
-    const items = await Item.find();
+    const items = await Item.find().populate("farmId");
+    return items;
+  } catch (err) {
+    throw new Error(err);
+  }
+};
+
+exports.getLimitedFarmsItems = async () => {
+  try {
+    const items = await Item.find().populate("farmId").limit(10);
     return items;
   } catch (err) {
     throw new Error(err);
@@ -414,6 +423,15 @@ exports.deleteItem = async (itemId) => {
   try {
     const deleted = await Item.findByIdAndDelete(itemId);
     return deleted;
+  } catch (err) {
+    throw new Error(err);
+  }
+};
+
+exports.getItemsByFarmId = async (farmId) => {
+  try {
+    const farmItems = await Item.find({ farmId: farmId });
+    return farmItems;
   } catch (err) {
     throw new Error(err);
   }

@@ -7,7 +7,6 @@ const courierServices = require("../services/courierServices");
 
 exports.createOrder = async (orderDetails) => {
   try {
-    console.log(orderDetails);
     const currentDate = utilities.getLocalDate(new Date());
     const order = new Order({
       fromAddress: orderDetails.fromAddress,

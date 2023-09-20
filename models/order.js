@@ -92,6 +92,8 @@ const orderSchema = new Schema(
     },
     orderItems: [
       {
+        farmName: { type: String },
+        itemId: { type: Schema.Types.ObjectId, ref: "item" },
         itemName: { type: String },
         itemPrice: { type: Number },
         quantity: { type: Number },
