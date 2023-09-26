@@ -185,7 +185,6 @@ exports.getOrderFromQueue = async (areaId) => {
     } else {
       const queueTurn = await cacheDB.lPop(`${areaId}`);
       const orderId = JSON.parse(queueTurn);
-      console.log(orderId);
       const order = await this.findOrder(orderId);
       return order;
     }

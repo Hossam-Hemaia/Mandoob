@@ -19,7 +19,6 @@ exports.postCreateUser = async (req, res, next) => {
       throw new Error("User already exist!");
     }
     const validPhoneNumber = phoneNumber.split("-").join("");
-    console.log(validPhoneNumber);
     const hashedPassword = await bcrypt.hash(password, 12);
     const userData = {
       employeeName,
@@ -278,7 +277,6 @@ exports.getCourierOrders = async (req, res, next) => {
 exports.postCreateArea = async (req, res, next) => {
   const { zoneName, areaName, areaPolygon } = req.body;
   try {
-    console.log(areaPolygon, zoneName);
     const areaData = {
       zoneName,
       areaName,

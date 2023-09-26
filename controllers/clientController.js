@@ -219,7 +219,7 @@ exports.deleteClientAccount = async (req, res, next) => {
 
 exports.getFarmsItems = async (req, res, next) => {
   try {
-    const items = await adminServices.getFarmsItems();
+    const items = await adminServices.getClientFarmsItems();
     res.status(200).json({ success: true, items });
   } catch (err) {
     next(err);

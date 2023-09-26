@@ -47,7 +47,7 @@ router.get(
   clientController.getLimitedFarmsItems
 );
 
-router.get("/farms", isAuth.clientIsAuth, clientController.getAllFarms);
+router.get("/get/farms", isAuth.clientIsAuth, clientController.getAllFarms);
 
 router.get("/farm/items", isAuth.clientIsAuth, clientController.getFarmItems);
 
