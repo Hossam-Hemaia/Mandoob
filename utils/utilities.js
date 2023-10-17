@@ -177,7 +177,7 @@ exports.sendSms = async (phoneNumber, code) => {
       username: process.env.sms_api_username,
       password: process.env.sms_api_password,
       sender: senderId,
-      test: "1",
+      test: process.env.sms_live,
       mobile: phoneNumber,
       lang: "1",
       message: "MANDOOB: Your Code Is: " + code,

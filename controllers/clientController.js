@@ -80,24 +80,24 @@ exports.postCreateOrder = async (req, res, next) => {
     const client = await clientServices.findClient(req.clientId);
     let parcelImage;
     let attachments = [];
-    // if (serviceType === "individual") {
-    //   if (req.files.length > 0) {
-    //     const image = req.files[0];
-    //     if (image) {
-    //       parcelImage = `${req.protocol}s://${req.get("host")}/${image.path}`;
-    //     }
-    //   }
-    // } else if (serviceType === "task") {
-    //   if (req.files.length > 0) {
-    //     const files = req.files;
-    //     if (files) {
-    //       for (let file of files) {
-    //         let document = `${req.protocol}s://${req.get("host")}/${file.path}`;
-    //         attachments.push(document);
-    //       }
-    //     }
-    //   }
-    // }
+    if (serviceType === "individual") {
+      if (req.files.length > 0) {
+        const image = req.files[0];
+        if (image) {
+          parcelImage = `${req.protocol}s://${req.get("host")}/${image.path}`;
+        }
+      }
+    } else if (serviceType === "task") {
+      if (req.files.length > 0) {
+        const files = req.files;
+        if (files) {
+          for (let file of files) {
+            let document = `${req.protocol}s://${req.get("host")}/${file.path}`;
+            attachments.push(document);
+          }
+        }
+      }
+    }
     const orderDetails = {
       fromAddress,
       toAddress,
@@ -172,6 +172,31 @@ exports.postCreateOrder = async (req, res, next) => {
       });
     } else if (orderType === "food") {
     }
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.putUpdateClientProfile = async (req, res, next) => {
+  try {
+    const { clientName, phoneNumber, email, address } = req.body;
+    const clientData = { clientName, phoneNumber, email, address };
+    const updateData = {};
+    for (let key in clientData) {
+      if (clientData[key] !== "") {
+        updateData[key] = clientData[key];
+      }
+    }
+    const clientUpdated = await clientServices.updateClient(
+      phoneNumber,
+      updateData
+    );
+    if (!clientUpdated) {
+      const error = new Error("could not update!");
+      error.statusCode = 422;
+      throw error;
+    }
+    res.status(201).json({ success: true, message: "Profile Updated" });
   } catch (err) {
     next(err);
   }

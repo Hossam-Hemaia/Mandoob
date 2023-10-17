@@ -3,6 +3,12 @@ const isAuth = require("../validator/isAuth");
 const clientController = require("../controllers/clientController");
 const router = express.Router();
 
+router.put(
+  "/update/profile",
+  isAuth.clientIsAuth,
+  clientController.putUpdateClientProfile
+);
+
 router.get("/deliver/data", clientController.getDeliveryData);
 
 router.post(
