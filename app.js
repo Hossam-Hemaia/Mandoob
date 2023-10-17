@@ -58,7 +58,7 @@ cron.schedule("0 0 * * *", async () => {
   await utilities.adjustAreasPolygons();
 });
 
-cron.schedule("*/1 * * * *", async () => {
+cron.schedule("0 0 * * *", async () => {
   await socketController.sendCouriersLocations();
 });
 

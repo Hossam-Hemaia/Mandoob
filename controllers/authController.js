@@ -2,6 +2,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { validationResult } = require("express-validator");
 const Client = require("../models/client");
+const Sms = require("../models/sms");
 const adminServices = require("../services/adminServices");
 const courierServices = require("../services/courierServices");
 const clientServices = require("../services/clientServices");
@@ -206,8 +207,39 @@ exports.getVerifyPhoneNumber = async (req, res, next) => {
     const phoneNumber = req.query.phoneNumber;
     const client = await clientServices.findClientByPhoneNumber(phoneNumber);
     if (client) {
-      res.status(200).json({ success: true, message: "Phone number exist" });
+      return res
+        .status(200)
+        .json({ success: true, message: "Phone number exist" });
     }
+    const resetCode = Math.floor(Math.random() * 1000000);
+    const code = resetCode.toString().padStart(6, "0");
+    const expiryTime = Date.now() + 3600000;
+    const messageSent = await utilities.sendSms(phoneNumber, code);
+    if (messageSent.result === "OK") {
+      // start creating message document and send response to user
+      const sms = new Sms({
+        messageId: messageSent["msg-id"],
+        code: code,
+        expiryStamp: expiryTime,
+      });
+      sms.save();
+    }
+    res.status(200).json({ success: true, messageId: messageSent["msg-id"] });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.getVerifySms = async (req, res, next) => {
+  try {
+    const messageId = req.query.messageId;
+    const code = req.query.code;
+    const sms = await Sms.findOne({ messageId: messageId });
+    const timeNow = Date.now();
+    if (sms.code !== code || sms.expiryStamp < timeNow) {
+      throw new Error("invalid or expired code");
+    }
+    res.status(200).json({ success: true, message: "verification succeeded" });
   } catch (err) {
     next(err);
   }

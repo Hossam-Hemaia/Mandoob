@@ -15,7 +15,7 @@ exports.findClientByPhoneNumber = async (phoneNumber) => {
   try {
     const client = await Client.findOne({ phoneNumber });
     if (!client) {
-      throw new Error("Phone number is not registered!");
+      return false;
     }
     return client;
   } catch (err) {

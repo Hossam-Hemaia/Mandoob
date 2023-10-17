@@ -155,3 +155,37 @@ exports.getCourierCache = async (courierId) => {
     console.log(err);
   }
 };
+
+exports.sendSms = async (phoneNumber, code) => {
+  try {
+    let senderId;
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    const senderIdData = {
+      username: process.env.sms_api_username,
+      password: process.env.sms_api_password,
+    };
+    const senderIdUrl = "https://www.kwtsms.com/API/senderid/";
+    const response = await axios.post(senderIdUrl, senderIdData, config);
+    if (response.data.result === "OK") {
+      senderId = response.data.senderid[0];
+    }
+    const messageData = {
+      username: process.env.sms_api_username,
+      password: process.env.sms_api_password,
+      sender: senderId,
+      test: "1",
+      mobile: phoneNumber,
+      lang: "1",
+      message: "MANDOOB: Your Code Is: " + code,
+    };
+    const sendSmsUrl = "https://www.kwtsms.com/API/send/";
+    const smsResponse = await axios.post(sendSmsUrl, messageData, config);
+    return smsResponse.data;
+  } catch (err) {
+    throw new Error(err);
+  }
+};

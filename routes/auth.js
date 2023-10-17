@@ -60,6 +60,8 @@ router.post("/logout", authController.logout);
 
 router.get("/verify/client/phone", authController.getVerifyPhoneNumber);
 
+router.get("/verify/sms", authController.getVerifySms);
+
 router.put(
   "/reset/password",
   [
