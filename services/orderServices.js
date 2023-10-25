@@ -7,6 +7,7 @@ const courierServices = require("../services/courierServices");
 
 exports.createOrder = async (orderDetails) => {
   try {
+    console.log(orderDetails.attachments);
     const currentDate = utilities.getLocalDate(new Date());
     const order = new Order({
       fromAddress: orderDetails.fromAddress,
@@ -20,7 +21,7 @@ exports.createOrder = async (orderDetails) => {
         lng: orderDetails.toPoint.lng,
       },
       parcelImage: orderDetails.parcelImage || "",
-      attachment: orderDetails.attachment,
+      attachments: orderDetails.attachments,
       parcelName: orderDetails.parcelName,
       parcelType: orderDetails.parcelType,
       vehicleType: orderDetails.vehicleType,
@@ -55,7 +56,8 @@ exports.findAllOrders = async (page, ITEMS_PER_PAGE) => {
     const orders = await Order.find()
       .skip((page - 1) * ITEMS_PER_PAGE)
       .limit(ITEMS_PER_PAGE)
-      .sort({ orderType: -1 });
+      .sort({ orderType: -1, createdAt: -1 })
+      .populate("courierId");
     if (!orders) {
       throw new Error("No orders found!");
     }

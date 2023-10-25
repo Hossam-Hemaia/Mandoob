@@ -39,7 +39,7 @@ const options = {
 dotenv.config();
 const app = express();
 
-const mongoDB_Uri = `${process.env.Test_DB_URI}`;
+const mongoDB_Uri = `${process.env.Production_DB_URI}`;
 
 app.use(cors(options));
 app.use(helemt());
@@ -58,7 +58,7 @@ cron.schedule("0 0 * * *", async () => {
   await utilities.adjustAreasPolygons();
 });
 
-cron.schedule("0 0 * * *", async () => {
+cron.schedule("*/1 * * * *", async () => {
   await socketController.sendCouriersLocations();
 });
 
@@ -89,4 +89,5 @@ io.on("connection", (socket) => {
   socketController.updateCourierCache(socket);
   socketController.getCourierCache(socket);
   socketController.deleteCourierCache(socket);
+  socketController.logout(socket);
 });

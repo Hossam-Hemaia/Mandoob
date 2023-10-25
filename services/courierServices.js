@@ -164,8 +164,10 @@ exports.updateCourierLocation = async (courierData) => {
 exports.createCourierTurn = async (courierData) => {
   try {
     const courierTurn = new ZoneData(courierData);
-    await courierTurn.save();
-    return courierTurn;
+    const saved = await courierTurn.save();
+    if (saved) {
+      return courierTurn;
+    }
   } catch (err) {
     throw new Error(err);
   }

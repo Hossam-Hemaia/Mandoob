@@ -23,11 +23,7 @@ const orderSchema = new Schema(
     parcelImage: {
       type: String,
     },
-    attachments: [
-      {
-        type: String,
-      },
-    ],
+    attachments: [],
     parcelName: {
       type: String,
     },

@@ -1,0 +1,33 @@
+[{
+  "_id": {
+    "$oid": "64a72e79fe649902b8ae5969"
+  },
+  "pricingCategory": "individual",
+  "pricePerKilometer": 1.5,
+  "minimumPrice": 3,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "64a72ec0fe649902b8ae596c"
+  },
+  "pricingCategory": "business",
+  "pricePerKilometer": 3.52,
+  "minimumPrice": 8,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "64a72ee1fe649902b8ae596f"
+  },
+  "pricingCategory": "task",
+  "pricePerKilometer": 3.52,
+  "minimumPrice": 8,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "64b98b280fc704970e4bfeae"
+  },
+  "pricingCategory": "food",
+  "pricePerKilometer": 15,
+  "minimumPrice": 20,
+  "__v": 0
+}]

@@ -1,0 +1,154 @@
+[{
+  "_id": {
+    "$oid": "64bc384e5eabc28234e8441b"
+  },
+  "clientName": "nooreldin sayed",
+  "phoneNumber": "82333934",
+  "email": "boornudi@gmail.com",
+  "address": "المنقف - قطعه 2 شارع 15 منزل 14",
+  "password": "$2a$12$t2DyorvDmBUUxflzzb5sTetIZsJ8SG.OXVpQAFdVsMvaJXY51tqEq",
+  "role": "client",
+  "createdAt": {
+    "$date": "2023-07-22T20:13:02.336Z"
+  },
+  "updatedAt": {
+    "$date": "2023-07-22T20:13:02.336Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "64c2b87dde2b2b006115ff00"
+  },
+  "clientName": "احمد  المرسي",
+  "phoneNumber": "60906644",
+  "email": "worlddevelopment97@gmail.com",
+  "address": "شارع بن خلدون",
+  "password": "$2a$12$5mcPNcI86HXtljj6hogO4O2PiwjK5SBzEvFc5foW3Dw81bf6I0FEa",
+  "role": "client",
+  "createdAt": {
+    "$date": "2023-07-27T18:33:33.995Z"
+  },
+  "updatedAt": {
+    "$date": "2023-07-27T18:33:33.995Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6512ad91710cc96a77ba57e0"
+  },
+  "clientName": "نور الدين  السيد",
+  "phoneNumber": "74322776",
+  "email": "noornido@gmail.com",
+  "address": "5555",
+  "password": "$2a$12$zEnBIEfo7baUHxvu.xXBV.XBds2eIEiXAvYYMwD5B5.ASpRDTvVyu",
+  "role": "client",
+  "createdAt": {
+    "$date": "2023-09-26T10:08:17.062Z"
+  },
+  "updatedAt": {
+    "$date": "2023-09-26T10:08:17.062Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "65132538710cc96a77ba5a18"
+  },
+  "clientName": "nooreldin sayed",
+  "phoneNumber": "23456534",
+  "email": "noornido@gmail.c",
+  "address": "kuvvuvuviivno hjj",
+  "password": "$2a$12$cFh9eslkvfh//SndVaSEW.LPv6bM2HIv7YfQreSo4EzLpON8GDt0.",
+  "role": "client",
+  "createdAt": {
+    "$date": "2023-09-26T18:38:48.301Z"
+  },
+  "updatedAt": {
+    "$date": "2023-09-26T18:38:48.301Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "651414f978f573a98d01880d"
+  },
+  "clientName": "نن نن",
+  "phoneNumber": "74322770",
+  "email": "noornido@gmail.com",
+  "address": "محرم بك بجوار فتح الله ماركت",
+  "password": "$2a$12$JGXQ362xr2qYSplCMZlPk.0nX6SlW2gi.hxYQBdBOiw9xUntAmAOy",
+  "role": "client",
+  "createdAt": {
+    "$date": "2023-09-27T11:41:45.293Z"
+  },
+  "updatedAt": {
+    "$date": "2023-09-27T11:41:45.293Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "6514152478f573a98d018899"
+  },
+  "clientName": "نن نن",
+  "phoneNumber": "74322771",
+  "email": "noornido@gmail.com",
+  "address": "محرم بك بجوار فتح الله ماركت",
+  "password": "$2a$12$Ui0axqlLLEyzLVCBgCt1ouf49oy0x1tuXR9rMvHiU5OjO54e.rsba",
+  "role": "client",
+  "createdAt": {
+    "$date": "2023-09-27T11:42:28.613Z"
+  },
+  "updatedAt": {
+    "$date": "2023-09-27T11:42:28.613Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "652ec031be37398ef6427251"
+  },
+  "clientName": "nokr saver",
+  "phoneNumber": "62333934",
+  "email": "noornido@hotmail.com",
+  "address": "mhram bek, alexandris",
+  "password": "$2a$12$abjAQbLNoiILY3VmQ4aWwOmjWk.ufzsyZXJ3/rGJ837RCX2/tygrW",
+  "role": "client",
+  "createdAt": {
+    "$date": "2023-10-17T17:11:13.986Z"
+  },
+  "updatedAt": {
+    "$date": "2023-10-17T17:11:13.986Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "652ecdcebe37398ef64272ae"
+  },
+  "clientName": "noon  dars",
+  "phoneNumber": "52333934",
+  "email": "noor@hotmail.com",
+  "address": "uh",
+  "password": "$2a$12$cin2yi/DLUV8opjyq6JOmOOO24VoC4vPmDKOjW00kNBfB7qBtU2xW",
+  "role": "client",
+  "createdAt": {
+    "$date": "2023-10-17T18:09:18.753Z"
+  },
+  "updatedAt": {
+    "$date": "2023-10-17T18:09:18.753Z"
+  },
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "652ed276be37398ef64272ec"
+  },
+  "clientName": "hh bh",
+  "phoneNumber": "62333935",
+  "email": "noornifi@hotmail.com",
+  "address": "chhcvh",
+  "password": "$2a$12$zGHeEX9dyDZ63tYNyMVXl.g7dq5qghnTmsvnETg5e5GkaNEMyBQYm",
+  "role": "client",
+  "createdAt": {
+    "$date": "2023-10-17T18:29:10.029Z"
+  },
+  "updatedAt": {
+    "$date": "2023-10-17T18:29:10.029Z"
+  },
+  "__v": 0
+}]

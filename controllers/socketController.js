@@ -260,3 +260,24 @@ exports.sendCouriersLocations = async () => {
     throw new Error(err);
   }
 };
+
+exports.logout = async (socket) => {
+  try {
+    socket.on("logout", async (event) => {
+      const courierId = event.courierId;
+      const { courierLog } = await courierServices.findCourierLog(courierId);
+      if (courierLog.hasOrder) {
+        throw new Error("You still have unsubmitted order!");
+      }
+      const courierData = {
+        courierId: courierId,
+        courierActive: false,
+      };
+      await courierServices.updateCourierLog(courierData);
+      await courierServices.deleteCourierTurn(courierId);
+      socket.disconnect();
+    });
+  } catch (err) {
+    throw new Error(err);
+  }
+};

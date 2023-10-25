@@ -124,6 +124,7 @@ exports.usersLogin = async (req, res, next) => {
         };
         const inQueue = await courierServices.courierInQueue(user._id);
         if (!inQueue) {
+          console.log(turnData);
           const courierTurn = await courierServices.createCourierTurn(turnData);
           const count = await courierServices.getCourierTurn(courierTurn);
           turn += count;

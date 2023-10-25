@@ -80,14 +80,14 @@ exports.postCreateOrder = async (req, res, next) => {
     const client = await clientServices.findClient(req.clientId);
     let parcelImage;
     let attachments = [];
-    if (serviceType === "individual") {
+    if (serviceType === "individual" || serviceType === "business") {
       if (req.files.length > 0) {
         const image = req.files[0];
         if (image) {
           parcelImage = `${req.protocol}s://${req.get("host")}/${image.path}`;
         }
       }
-    } else if (serviceType === "task") {
+    } else if (serviceType === "Mandoobk") {
       if (req.files.length > 0) {
         const files = req.files;
         if (files) {
@@ -104,7 +104,7 @@ exports.postCreateOrder = async (req, res, next) => {
       fromPoint,
       toPoint,
       parcelImage,
-      attachments: attachments,
+      attachments,
       parcelName,
       parcelType,
       vehicleType,
@@ -139,6 +139,7 @@ exports.postCreateOrder = async (req, res, next) => {
       }
       const needFridge = vehicleType !== "car" ? true : false;
       const courier = await clientServices.findCourier(area.areaId, needFridge);
+      console.log("order sent to: ", courier);
       if (!courier) {
         await orderServices.pushOrderToQueue(area.areaId, newOrder._id);
         return res.status(201).json({
@@ -170,7 +171,6 @@ exports.postCreateOrder = async (req, res, next) => {
         orderId: newOrder._id,
         message: "Order Created!",
       });
-    } else if (orderType === "food") {
     }
   } catch (err) {
     next(err);

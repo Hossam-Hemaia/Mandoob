@@ -1,0 +1,41 @@
+[{
+  "_id": {
+    "$oid": "64824fe5e39addb97df7b273"
+  },
+  "shiftHours": 5,
+  "startingHour": 8,
+  "startingMinute": 0,
+  "endingHour": 13,
+  "endingMinute": 0,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "64af01f6b52e15ba7c44db3b"
+  },
+  "shiftHours": 8,
+  "startingHour": 0,
+  "startingMinute": 1,
+  "endingHour": 23,
+  "endingMinute": 59,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "64b05b2f51f439dbd45a04bd"
+  },
+  "shiftHours": 23,
+  "startingHour": 0,
+  "startingMinute": 0,
+  "endingHour": 23,
+  "endingMinute": 59,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "651332eaee6167d39d98fc83"
+  },
+  "shiftHours": 6,
+  "startingHour": 12,
+  "startingMinute": 0,
+  "endingHour": 18,
+  "endingMinute": 0,
+  "__v": 0
+}]

@@ -1,0 +1,113 @@
+[{
+  "_id": {
+    "$oid": "64b2e6caeb82f11152ec8cdb"
+  },
+  "courierName": "Ahmed",
+  "birthdate": {
+    "$date": "2023-07-18T21:00:00Z"
+  },
+  "phoneNumber": "2011-5835",
+  "licenseNumber": "A45125",
+  "companyName": "AMB",
+  "carBrand": "BMW",
+  "carModel": "2023",
+  "plateNumber": "A23112",
+  "documents": [],
+  "workingAreaId": {
+    "$oid": "652816c43b4284b3376d58e9"
+  },
+  "workingShiftId": {
+    "$oid": "64b05b2f51f439dbd45a04bd"
+  },
+  "hasFridge": true,
+  "isActive": true,
+  "username": 1004,
+  "password": "$2a$12$CNx0Fn4T12cb8Kc45Ig51.lWwB68zenvl3wux2o3ltR8Tg4VA1oC6",
+  "role": "courier",
+  "createdAt": {
+    "$date": "2023-07-15T18:34:50.205Z"
+  },
+  "updatedAt": {
+    "$date": "2023-10-24T09:46:14.949Z"
+  },
+  "__v": 0,
+  "courierLogId": {
+    "$oid": "64c3e236de2b2b0061160445"
+  }
+},{
+  "_id": {
+    "$oid": "64b46380e956f16751c85463"
+  },
+  "courierName": "Ahmed",
+  "birthdate": {
+    "$date": "2023-07-10T21:00:00Z"
+  },
+  "phoneNumber": "0201-0209",
+  "licenseNumber": "A45125",
+  "companyName": "AMB",
+  "carBrand": "BMW",
+  "carModel": "2023",
+  "plateNumber": "A23112",
+  "documents": [
+    "https://mandoob.kportals.net/images/1689707882303-Ø¥Ø³ÙØ§ÙÙØ© Ø§ÙÙØ¹Ø±ÙØ© 3 .pdf"
+  ],
+  "workingAreaId": {
+    "$oid": "64bae8e4b6bcf867f8a5c51c"
+  },
+  "workingShiftId": {
+    "$oid": "64b05b2f51f439dbd45a04bd"
+  },
+  "hasFridge": true,
+  "isActive": true,
+  "username": 1005,
+  "password": "$2a$12$cFQ7/PXyc4lZF5rxcw6CMuMLMOdHfvwSas.UwTftiJbpnnilHivQG",
+  "role": "courier",
+  "createdAt": {
+    "$date": "2023-07-16T21:39:12.689Z"
+  },
+  "updatedAt": {
+    "$date": "2023-10-23T22:51:38.686Z"
+  },
+  "__v": 1,
+  "courierLogId": {
+    "$oid": "64bf023898a26222b98dabf7"
+  }
+},{
+  "_id": {
+    "$oid": "64d52b9e734b0f12794115c2"
+  },
+  "courierName": "Hossam",
+  "birthdate": {
+    "$date": "1989-12-31T22:00:00Z"
+  },
+  "phoneNumber": "9859-6585",
+  "licenseNumber": "A45150635",
+  "companyName": "MANDOOB",
+  "carBrand": "BMW",
+  "carModel": "2023",
+  "plateNumber": "A23112565",
+  "documents": [
+    "https://mandoob.kportals.net/images/1691691934132-ANIMATED.gif"
+  ],
+  "workingAreaId": {
+    "$oid": "64bae8e4b6bcf867f8a5c51c"
+  },
+  "workingShiftId": {
+    "$oid": "64b05b2f51f439dbd45a04bd"
+  },
+  "hasFridge": true,
+  "isActive": true,
+  "username": 1006,
+  "password": "$2a$12$u9WkI8bZ/L9D.ltrL0xOWukkAJachvw3w3fXDz5KDaHIqP7ktHu1W",
+  "role": "courier",
+  "createdAt": {
+    "$date": "2023-08-10T18:25:34.536Z"
+  },
+  "updatedAt": {
+    "$date": "2023-09-25T21:48:18.181Z"
+  },
+  "__v": 0,
+  "courierLogId": {
+    "$oid": "64d539f9734b0f12794117e5"
+  }
+}]
