@@ -33,9 +33,13 @@ exports.getDeliveryData = async (req, res, next) => {
     const distance = data.paths[0].distance / 1000;
     const estimatedTime = data.paths[0].time / 1000 / 60;
     const pricing = await adminServices.getPricing(pricingCategory);
-    let price = distance * pricing.pricePerKilometer;
-    if (price < pricing.minimumPrice) {
+    let price;
+    if (distance <= 20) {
       price = pricing.minimumPrice;
+    } else {
+      let remainingDistance = distance - 20;
+      let overDistancePrice = remainingDistance * pricing.pricePerKilometer;
+      price = pricing.minimumPrice + overDistancePrice;
     }
     res.status(200).json({
       success: true,

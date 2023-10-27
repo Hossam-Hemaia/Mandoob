@@ -181,6 +181,18 @@ exports.getVerifyToken = async (req, res, next) => {
       decodedToken: decodedToken,
       admin,
     });
+  } else if (decodedToken.role === "farmer") {
+    const farmer = await adminServices.getUserById(decodedToken.userId);
+    if (!farmer || farmer.role !== "farmer") {
+      const error = new Error("Authorization faild!");
+      error.statusCode = 401;
+      next(error);
+    }
+    return res.status(200).json({
+      success: true,
+      decodedToken: decodedToken,
+      farmer,
+    });
   }
 };
 

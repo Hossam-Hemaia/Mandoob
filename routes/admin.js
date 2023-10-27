@@ -158,6 +158,12 @@ router.post(
 
 router.get("/farms/items", isAuth.adminIsAuth, adminController.getFarmItems);
 
+router.get(
+  "/farmer/items",
+  isAuth.farmerIsAuth,
+  adminController.getFarmerItems
+);
+
 router.get("/get/item", isAuth.adminIsAuth, adminController.getItem);
 
 router.put(

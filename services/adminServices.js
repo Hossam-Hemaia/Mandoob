@@ -6,19 +6,26 @@ const Pricing = require("../models/pricing");
 const FoodZone = require("../models/foodZone");
 const Farm = require("../models/farm");
 const Item = require("../models/item");
+const Farmer = require("../models/farmer");
 const rdsClient = require("../config/redisConnect");
 
 // USERS SERVICES //
 
 exports.createUser = async (userData) => {
   try {
-    const user = new User({
-      employeeName: userData.employeeName,
-      phoneNumber: userData.phoneNumber,
-      username: userData.username,
-      role: userData.role,
-      password: userData.password,
-    });
+    let user;
+    if (userData.role === "farmer") {
+      user = new Farmer(userData);
+    } else {
+      user = new User({
+        employeeName: userData.employeeName,
+        phoneNumber: userData.phoneNumber,
+        username: userData.username,
+        role: userData.role,
+        password: userData.password,
+      });
+    }
+    console.log(user);
     await user.save();
     return user;
   } catch (err) {
@@ -82,6 +89,10 @@ exports.editUser = async (userId, updatedData) => {
         ? updatedData.phoneNumber
         : user.phoneNumber;
     user.role = updatedData.role !== "" ? updatedData.role : user.role;
+    user.role === "farmer"
+      ? (user.farmId =
+          updatedData.farmId !== "" ? updatedData.farmId : user.farmId)
+      : user.farmId;
     await user.save();
     return true;
   } catch (err) {
@@ -380,6 +391,15 @@ exports.createItem = async (itemData) => {
 exports.getFarmsItems = async () => {
   try {
     const items = await Item.find().populate("farmId");
+    return items;
+  } catch (err) {
+    throw new Error(err);
+  }
+};
+
+exports.getFarmItems = async (farmId) => {
+  try {
+    const items = await Item.find({ farmId: farmId });
     return items;
   } catch (err) {
     throw new Error(err);

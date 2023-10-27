@@ -89,3 +89,32 @@ exports.courierIsAuth = async (req, res, next) => {
   req.courierId = courier._id;
   next();
 };
+
+exports.farmerIsAuth = async (req, res, next) => {
+  let decodedToken;
+  try {
+    const token = req.get("Authorization").split(" ")[1];
+    decodedToken = jwt.verify(token, process.env.SECRET);
+  } catch (err) {
+    err.statusCode = 403;
+    next(err);
+  }
+  if (!decodedToken) {
+    const error = new Error("Authorization faild!");
+    error.statusCode = 401;
+    next(error);
+  }
+  if (decodedToken.role !== "farmer") {
+    const error = new Error("Authorization faild!");
+    error.statusCode = 403;
+    next(error);
+  }
+  const farmer = await adminServices.getUserById(decodedToken.userId);
+  if (!farmer || farmer.role !== "farmer") {
+    const error = new Error("Authorization faild!");
+    error.statusCode = 403;
+    next(error);
+  }
+  req.farmerId = decodedToken.userId;
+  next();
+};

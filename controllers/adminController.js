@@ -6,7 +6,7 @@ const orderServices = require("../services/orderServices");
 // USERS CONTROLLERS //
 
 exports.postCreateUser = async (req, res, next) => {
-  const { employeeName, phoneNumber, role, password, confirmPassword } =
+  const { employeeName, phoneNumber, role, password, confirmPassword, farmId } =
     req.body;
   try {
     if (password !== confirmPassword) {
@@ -26,6 +26,7 @@ exports.postCreateUser = async (req, res, next) => {
       username: validPhoneNumber,
       role,
       password: hashedPassword,
+      farmId,
     };
     const newUser = await adminServices.createUser(userData);
     if (!newUser) {
@@ -74,9 +75,9 @@ exports.getUser = async (req, res, next) => {
 };
 
 exports.putEditUser = async (req, res, next) => {
-  const { employeeName, phoneNumber, role, userId } = req.body;
+  const { employeeName, phoneNumber, role, userId, farmId } = req.body;
   try {
-    const updatedData = { employeeName, phoneNumber, role };
+    const updatedData = { employeeName, phoneNumber, role, farmId };
     const updated = await adminServices.editUser(userId, updatedData);
     if (!updated) {
       const error = new Error("User not found!");
@@ -732,6 +733,16 @@ exports.postCreateFarmItem = async (req, res, next) => {
 exports.getFarmItems = async (req, res, next) => {
   try {
     const items = await adminServices.getFarmsItems();
+    res.status(200).json({ success: true, items });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.getFarmerItems = async (req, res, next) => {
+  try {
+    const farmId = req.query.farmId;
+    const items = await adminServices.getFarmItems(farmId);
     res.status(200).json({ success: true, items });
   } catch (err) {
     next(err);
