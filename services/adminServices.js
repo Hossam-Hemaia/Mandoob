@@ -264,6 +264,7 @@ exports.SetPricing = async (pricingData) => {
     if (price) {
       price.pricePerKilometer = pricingData.pricePerKilometer;
       price.minimumPrice = pricingData.minimumPrice;
+      price.fridgePrice = pricingData.fridgePrice;
       await price.save();
       return true;
     } else {
@@ -271,6 +272,7 @@ exports.SetPricing = async (pricingData) => {
         pricingCategory: pricingData.pricingCategory,
         pricePerKilometer: pricingData.pricePerKilometer,
         minimumPrice: pricingData.minimumPrice,
+        fridgePrice: pricingData.fridgePrice,
       });
       await price.save();
       return true;

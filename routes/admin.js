@@ -158,12 +158,6 @@ router.post(
 
 router.get("/farms/items", isAuth.adminIsAuth, adminController.getFarmItems);
 
-router.get(
-  "/farmer/items",
-  isAuth.farmerIsAuth,
-  adminController.getFarmerItems
-);
-
 router.get("/get/item", isAuth.adminIsAuth, adminController.getItem);
 
 router.put(
@@ -173,5 +167,31 @@ router.put(
 );
 
 router.delete("/delete/item", isAuth.adminIsAuth, adminController.deleteItem);
+
+router.get(
+  "/farmer/items",
+  isAuth.farmerIsAuth,
+  adminController.getFarmerItems
+);
+
+router.get("/get/farmer/item", isAuth.farmerIsAuth, adminController.getItem);
+
+router.post(
+  "/create/farmer/item",
+  isAuth.farmerIsAuth,
+  adminController.postCreateFarmItem
+);
+
+router.put(
+  "/edit/farmer/item",
+  isAuth.farmerIsAuth,
+  adminController.putEditFarmItem
+);
+
+router.delete(
+  "/delete/farmer/item",
+  isAuth.farmerIsAuth,
+  adminController.deleteItem
+);
 
 module.exports = router;

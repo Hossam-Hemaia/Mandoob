@@ -575,12 +575,13 @@ exports.getAvailableCouriers = async (req, res, next) => {
 // PRICING CONTROLLERS //
 
 exports.postSetPricing = async (req, res, next) => {
-  const { pricingCategory, pricePerKilometer, minimumPrice } = req.body;
+  const { pricingCategory, pricePerKilometer, minimumPrice, fridgePrice } = req.body;
   try {
     const pricingData = {
       pricingCategory,
       pricePerKilometer,
       minimumPrice,
+      fridgePrice,
     };
     const priceSet = await adminServices.SetPricing(pricingData);
     if (priceSet) {

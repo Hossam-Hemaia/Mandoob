@@ -149,6 +149,7 @@ exports.usersLogin = async (req, res, next) => {
       turn: turn,
       userId: user._id,
       role: user.role,
+      farmId: user.farmId || "",
     });
   } catch (err) {
     next(err);
