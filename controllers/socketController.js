@@ -97,15 +97,22 @@ exports.courierDeclined = async (socket) => {
 };
 
 exports.courierApology = async (socket) => {
-  socket.on("courier_apology", async (event) => {
-    const io = require("../socket").getIo();
-    const { courierId, orderId, reason } = event;
-    await courierServices.courierRejection(courierId, orderId, reason);
-    io.emit("courier_refused", {
-      orderId: orderId,
-      message: "Courier refused to receive the order",
+  try{
+    socket.on("courier_apology", async (event) => {
+      const io = require("../socket").getIo();
+      const { courierId, orderId, reason } = event;
+      await courierServices.courierRejection(courierId, orderId, reason);
+      await courierServices.setCourierBusyStatus(courierId, true);
+      await courierServices.deleteCourierTurn(courierId);
+      console.log("courier apologiesed");
+      io.emit("courier_refused", {
+        orderId: orderId,
+        message: "Courier refused to receive the order",
+      });
     });
-  });
+  }catch(err){
+    throw new Error(err);
+  }
 };
 
 exports.courierReceivedOrder = async (socket) => {
@@ -125,6 +132,7 @@ exports.courierCurrentLocation = async (socket) => {
     socket.on("current_point", async (event) => {
       const { orderId, courierId, flag, location } = event;
       if (flag === "vacant") {
+        let lockStatus = false;
         const courier = await courierServices.findCourier(courierId);
         console.log(`courier ${courier.username} vacant`);
         const courierData = {
@@ -134,10 +142,9 @@ exports.courierCurrentLocation = async (socket) => {
         };
         await courierServices.updateCourierLocation(courierData);
         const courierInArea = await utilities.courierInArea(courierData);
+        const { courierLog } = await courierServices.findCourierLog(courierId);
+        lockStatus = courierLog.isBusy;
         if (courierInArea) {
-          const { courierLog } = await courierServices.findCourierLog(
-            courierId
-          );
           if (!courierLog.isBusy) {
             const order = await orderServices.getOrderFromQueue(
               courier.workingAreaId
@@ -183,7 +190,11 @@ exports.courierCurrentLocation = async (socket) => {
         } else {
           await courierServices.deleteCourierTurn(courierId);
         }
-        socket.emit("courier_vacant", { courierId: courierId, flag: flag });
+        socket.emit("courier_vacant", {
+          courierId: courierId,
+          flag: flag,
+          lockStatus: lockStatus,
+        });
       } else if (flag === "picking up") {
         console.log("Picking up order");
         socket.emit("picking_up", { courierId: courierId, flag: flag });

@@ -221,6 +221,7 @@ exports.setCourierBusyStatus = async (courierId, state) => {
       throw new Error("Courier has to login once at least!");
     }
     courierLog.isBusy = state;
+    courierLog.hasOrder = false;
     await courierLog.save();
   } catch (err) {
     throw new Error(err);

@@ -47,6 +47,7 @@ exports.getDeliveryData = async (req, res, next) => {
         route: deliveryRoute,
         km: distance,
         time: estimatedTime,
+        fridgePrice: pricing.fridgePrice,
         price: price,
       },
     });
