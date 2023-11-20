@@ -267,7 +267,8 @@ exports.getLimitedFarmsItems = async (req, res, next) => {
 
 exports.getAllFarms = async (req, res, next) => {
   try {
-    const farms = await adminServices.allFarms();
+    const category = req.query.category;
+    const farms = await adminServices.allFarms(category);
     res.status(200).json({ success: true, farms });
   } catch (err) {
     next(err);

@@ -2,6 +2,7 @@ const bcrypt = require("bcryptjs");
 const adminServices = require("../services/adminServices");
 const courierServices = require("../services/courierServices");
 const orderServices = require("../services/orderServices");
+const utilities = require("../utils/utilities");
 
 // USERS CONTROLLERS //
 
@@ -575,7 +576,8 @@ exports.getAvailableCouriers = async (req, res, next) => {
 // PRICING CONTROLLERS //
 
 exports.postSetPricing = async (req, res, next) => {
-  const { pricingCategory, pricePerKilometer, minimumPrice, fridgePrice } = req.body;
+  const { pricingCategory, pricePerKilometer, minimumPrice, fridgePrice } =
+    req.body;
   try {
     const pricingData = {
       pricingCategory,
@@ -658,10 +660,11 @@ exports.deleteFoodZone = async (req, res, next) => {
 
 exports.postCreateFarm = async (req, res, next) => {
   try {
-    const { farmName, foodZoneId } = req.body;
+    const { farmName, foodZoneId, category } = req.body;
     const farmData = {
       farmName,
       foodZoneId,
+      category,
     };
     const farm = await adminServices.createFarm(farmData);
     if (farm) {
@@ -674,7 +677,8 @@ exports.postCreateFarm = async (req, res, next) => {
 
 exports.getFarms = async (req, res, next) => {
   try {
-    const farms = await adminServices.allFarms();
+    const category = req.query.category;
+    const farms = await adminServices.allFarms(category);
     res.status(200).json({ success: true, farms });
   } catch (err) {
     next(err);
@@ -795,6 +799,39 @@ exports.deleteItem = async (req, res, next) => {
     if (deleted) {
       return res.status(200).json({ success: true, message: "item deleted!" });
     }
+  } catch (err) {
+    next(err);
+  }
+};
+
+// Reports Controller
+
+exports.getBusinessOwnerSales = async (req, res, next) => {
+  try {
+    const businessOwnerId = req.query.businessOwnerId;
+    const dateFrom = req.query.dateFrom;
+    const dateTo = req.query.dateTo;
+    const orders = await orderServices.getBusinessOrders(
+      businessOwnerId,
+      dateFrom,
+      dateTo
+    );
+    const report = await utilities.createBusinessOwnerReport(orders);
+    const reportUrl = `${req.protocol}s://${req.get("host")}/files/${report}`;
+    res.status(200).json({ success: true, url: reportUrl });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.getCouriersReport = async (req, res, next) => {
+  try {
+    const dateFrom = req.query.dateFrom;
+    const dateTo = req.query.dateTo;
+    const orders = await orderServices.getCouriersOrders(dateFrom, dateTo);
+    const report = await utilities.createCouriersOrdersReport(orders);
+    const reportUrl = `${req.protocol}s://${req.get("host")}/files/${report}`;
+    res.status(200).json({ success: true, url: reportUrl });
   } catch (err) {
     next(err);
   }

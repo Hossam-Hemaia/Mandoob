@@ -348,9 +348,9 @@ exports.createFarm = async (farmData) => {
   }
 };
 
-exports.allFarms = async () => {
+exports.allFarms = async (category) => {
   try {
-    const farms = await Farm.find();
+    const farms = await Farm.find({ category: category });
     return farms;
   } catch (err) {
     throw new Error(err);

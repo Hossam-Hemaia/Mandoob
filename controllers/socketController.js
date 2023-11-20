@@ -197,10 +197,10 @@ exports.courierCurrentLocation = async (socket) => {
         });
       } else if (flag === "picking up") {
         console.log("Picking up order");
-        socket.emit("picking_up", { courierId: courierId, flag: flag });
+        //socket.emit("picking_up", { courierId: courierId, flag: flag });
       } else if (flag === "delivering") {
         console.log("going to receiver");
-        socket.emit("delivering_order", { courierId: courierId, flag: flag });
+        //socket.emit("delivering_order", { courierId: courierId, flag: flag });
       }
     });
   } catch (err) {

@@ -11,6 +11,9 @@ const farmSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "foodzone",
     },
+    category: {
+      type: String,
+    },
   },
   { timestamps: true }
 );

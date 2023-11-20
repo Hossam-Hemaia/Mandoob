@@ -47,20 +47,25 @@ const orderSchema = new Schema(
     },
     receiverPhone: {
       type: String,
+      default: "",
     },
     deliveryPrice: {
       type: Number,
+      default: 0,
     },
     payer: {
       type: String,
+      default: "",
     },
     paymentStatus: {
       //paid or pending
       type: String,
+      default: "",
     },
     paymentType: {
       //cash or credit
       type: String,
+      default: "",
     },
     orderStatus: [{ state: { type: String }, date: { type: Date } }], //[pending, accepted, received, transporting, delivered or rejected]
     serviceType: {
@@ -74,12 +79,15 @@ const orderSchema = new Schema(
     },
     orderTime: {
       type: String,
+      default: "",
     },
     companyName: {
       type: String,
+      default: "",
     },
     businessType: {
       type: String,
+      default: "",
     },
     clientId: {
       type: Schema.Types.ObjectId,
@@ -97,9 +105,11 @@ const orderSchema = new Schema(
     ],
     notes: {
       type: String,
+      default: "",
     },
     rejectionReason: {
       type: String,
+      default: "",
     },
     courierId: {
       type: Schema.Types.ObjectId,

@@ -194,4 +194,24 @@ router.delete(
   adminController.deleteItem
 );
 
+// reports
+
+router.get(
+  "/reports/business/owners",
+  isAuth.adminIsAuth,
+  adminController.getBusinessOwnerSales
+);
+
+router.get(
+  "/reports/couriers/orders",
+  isAuth.adminIsAuth,
+  adminController.getCouriersReport
+);
+
+router.get(
+  "/business/owner/report",
+  isAuth.farmerIsAuth,
+  adminController.getBusinessOwnerSales
+);
+
 module.exports = router;

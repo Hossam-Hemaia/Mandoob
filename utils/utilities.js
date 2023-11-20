@@ -1,5 +1,7 @@
+const path = require("path");
 const axios = require("axios");
 const geolib = require("geolib");
+const Exceljs = require("exceljs");
 const Area = require("../models/area");
 const rdsClient = require("../config/redisConnect");
 const FoodZone = require("../models/foodZone");
@@ -185,6 +187,232 @@ exports.sendSms = async (phoneNumber, code) => {
     const sendSmsUrl = "https://www.kwtsms.com/API/send/";
     const smsResponse = await axios.post(sendSmsUrl, messageData, config);
     return smsResponse.data;
+  } catch (err) {
+    throw new Error(err);
+  }
+};
+
+exports.createBusinessOwnerReport = async (orders) => {
+  try {
+    const fileName = `${Date.now()}-orders.xlsx`;
+    const filePath = path.join("files", fileName);
+    const workbook = new Exceljs.Workbook();
+    const ordersData = [];
+    for (let order of orders) {
+      let orderArr = [];
+      for (let key in order) {
+        orderArr.push(order[key]);
+      }
+      ordersData.push(orderArr);
+    }
+    workbook.created = new Date();
+    workbook.calcProperties.fullCalcOnLoad = true;
+    workbook.views = [
+      {
+        x: 0,
+        y: 0,
+        width: 10000,
+        height: 20000,
+        firstSheet: 0,
+        activeTab: 1,
+        visibility: "visible",
+      },
+    ];
+    const sheet = workbook.addWorksheet("orders");
+    sheet.addTable({
+      name: "ordersTable",
+      ref: "A1",
+      headerRow: true,
+      totalsRow: false,
+      columns: [
+        {
+          name: "order id",
+        },
+        {
+          name: "from address",
+        },
+        {
+          name: "to address",
+        },
+        {
+          name: "sender name",
+        },
+        {
+          name: "sender phone",
+        },
+        {
+          name: "receiver name",
+        },
+        {
+          name: "receiver phone",
+        },
+        {
+          name: "delivery price",
+        },
+        {
+          name: "payer",
+        },
+        {
+          name: "payment status",
+        },
+        {
+          name: "payment type",
+        },
+        {
+          name: "order status",
+        },
+        {
+          name: "order date",
+        },
+        {
+          name: "order items",
+        },
+      ],
+      rows: ordersData,
+    });
+    const ordersRows = sheet.getRows(1, orders.length + 1);
+    ordersRows.forEach((row, rowIndex) => {
+      row.eachCell({ includeEmpty: true }, function (cell, colNumber) {
+        cell.alignment = { horizontal: "center" };
+      });
+    });
+    await workbook.xlsx.writeFile(filePath);
+    return fileName;
+  } catch (err) {
+    throw new Error(err);
+  }
+};
+
+exports.createCouriersOrdersReport = async (orders) => {
+  try {
+    const fileName = `${Date.now()}-couriers-orders.xlsx`;
+    const filePath = path.join("files", fileName);
+    const ordersData = [];
+    for (let order of orders) {
+      let orderArr = [];
+      for (let key in order) {
+        console.log(key);
+        if (key === "courierId") {
+          orderArr.push(order[key].courierName, order[key].username);
+        } else {
+          orderArr.push(order[key]);
+        }
+      }
+      ordersData.push(orderArr);
+    }
+    const workbook = new Exceljs.Workbook();
+    workbook.created = new Date();
+    workbook.calcProperties.fullCalcOnLoad = true;
+    workbook.views = [
+      {
+        x: 0,
+        y: 0,
+        width: 10000,
+        height: 20000,
+        firstSheet: 0,
+        activeTab: 1,
+        visibility: "visible",
+      },
+    ];
+    const sheet = workbook.addWorksheet("orders");
+    sheet.addTable({
+      name: "ordersTable",
+      ref: "A1",
+      headerRow: true,
+      totalsRow: false,
+      columns: [
+        {
+          name: "order id",
+        },
+        {
+          name: "from address",
+        },
+        {
+          name: "to address",
+        },
+        {
+          name: "parcel image",
+        },
+        {
+          name: "attachments",
+        },
+        {
+          name: "parcel name",
+        },
+        {
+          name: "parcel type",
+        },
+        {
+          name: "vehicle type",
+        },
+        {
+          name: "sender name",
+        },
+        {
+          name: "sender phone",
+        },
+        {
+          name: "receiver name",
+        },
+        {
+          name: "receiver phone",
+        },
+        {
+          name: "delivery price",
+        },
+        {
+          name: "payer",
+        },
+        {
+          name: "payment status",
+        },
+        {
+          name: "payment type",
+        },
+        {
+          name: "order status",
+        },
+        {
+          name: "service type",
+        },
+        {
+          name: "order type",
+        },
+        {
+          name: "order date",
+        },
+        {
+          name: "order time",
+        },
+        {
+          name: "company name",
+        },
+        {
+          name: "business type",
+        },
+        {
+          name: "order items",
+        },
+        {
+          name: "notes",
+        },
+        {
+          name: "courier name",
+        },
+        {
+          name: "username",
+        },
+      ],
+      rows: ordersData,
+    });
+    const ordersRows = sheet.getRows(1, orders.length + 1);
+    ordersRows.forEach((row, rowIndex) => {
+      row.eachCell({ includeEmpty: true }, function (cell, colNumber) {
+        cell.alignment = { horizontal: "center" };
+      });
+    });
+    await workbook.xlsx.writeFile(filePath);
+    return fileName;
   } catch (err) {
     throw new Error(err);
   }

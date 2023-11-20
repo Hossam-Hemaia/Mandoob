@@ -1,5 +1,6 @@
 const rdsClient = require("../config/redisConnect");
 const Order = require("../models/order");
+const Farm = require("../models/farm");
 const utilities = require("../utils/utilities");
 const adminServices = require("../services/adminServices");
 const clientServices = require("../services/clientServices");
@@ -109,7 +110,7 @@ exports.assignOrder = async (orderId, courier) => {
     const currentDate = utilities.getLocalDate(new Date());
     const order = await Order.findById(orderId).populate("clientId");
     order.orderStatus.push({ state: "accepted", date: currentDate });
-    order.courierId = courier._id;
+    order.courierId = courier.courierId;
     order.orderType = "instant";
     await order.save();
     return order;
@@ -123,6 +124,19 @@ exports.updateOrderStatus = async (orderId, status) => {
     const currentDate = utilities.getLocalDate(new Date());
     const order = await Order.findById(orderId);
     order.orderStatus.push({ state: status, date: currentDate });
+    if (
+      order.payer === "sender" &&
+      status === "received" &&
+      order.paymentType === "cash"
+    ) {
+      order.paymentStatus = "paid";
+    } else if (
+      order.payer === "sender" &&
+      status === "delivered" &&
+      order.paymentType === "cash"
+    ) {
+      order.paymentStatus = "paid";
+    }
     await order.save();
     return true;
   } catch (err) {
@@ -234,6 +248,73 @@ exports.QueuedOrders = async () => {
       }
     }
     return queuedOrders;
+  } catch (err) {
+    throw new Error(err);
+  }
+};
+
+exports.getOrdersByServiceType = async (serviceType) => {
+  try {
+    const orders = await Order.find({ orderType: orderType });
+    return orders;
+  } catch (err) {
+    throw new Error(err);
+  }
+};
+
+exports.getBusinessOrders = async (businessOwnerId, dateFrom, dateTo) => {
+  try {
+    const startDate = new Date(dateFrom);
+    const endDate = new Date(dateTo);
+    const businessOwner = await Farm.findById(businessOwnerId);
+    const orders = await Order.find(
+      {
+        serviceType: "food",
+        orderItems: { $elemMatch: { farmName: businessOwner.farmName } },
+        orderDate: { $gte: startDate, $lte: endDate },
+      },
+      {
+        fromAddress: 1,
+        toAddress: 1,
+        senderName: 1,
+        senderPhone: 1,
+        receiverName: 1,
+        receiverPhone: 1,
+        deliveryPrice: 1,
+        payer: 1,
+        paymentStatus: 1,
+        paymentType: 1,
+        orderStatus: 1,
+        orderDate: 1,
+        orderItems: 1,
+      }
+    ).lean();
+    return orders;
+  } catch (err) {
+    throw new Error(err);
+  }
+};
+
+exports.getCouriersOrders = async (dateFrom, dateTo) => {
+  try {
+    const startDate = new Date(dateFrom);
+    const endDate = new Date(dateTo);
+    const orders = await Order.find(
+      {
+        orderDate: { $gte: startDate, $lte: endDate },
+      },
+      {
+        fromPoint: 0,
+        toPoint: 0,
+        clientId: 0,
+        createdAt: 0,
+        updatedAt: 0,
+        __v: 0,
+      }
+    )
+      .populate("courierId")
+      .lean();
+    return orders;
   } catch (err) {
     throw new Error(err);
   }

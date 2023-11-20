@@ -48,6 +48,7 @@ app.use(compression());
 app.use(cookieParser());
 
 app.use("/images", express.static(path.join(__dirname, "images")));
+app.use("/files", express.static(path.join(__dirname, "files")));
 app.use(multer({ storage: fileStorage }).array("files"));
 
 app.use(process.env.api, authRouter);
