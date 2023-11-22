@@ -142,7 +142,11 @@ router.delete(
 
 router.post("/create/farm", isAuth.adminIsAuth, adminController.postCreateFarm);
 
-router.get("/farms", isAuth.adminIsAuth, adminController.getFarms);
+router.get(
+  "/admin/farms",
+  isAuth.adminIsAuth,
+  adminController.getAllBusinessFirms
+);
 
 router.get("/farm/detail", isAuth.adminIsAuth, adminController.getFarm);
 
@@ -195,6 +199,12 @@ router.delete(
 );
 
 // reports
+
+router.get(
+  "/get/business/owners",
+  isAuth.adminIsAuth,
+  adminController.getAllBsinessOwners
+);
 
 router.get(
   "/reports/business/owners",

@@ -348,6 +348,15 @@ exports.createFarm = async (farmData) => {
   }
 };
 
+exports.allBusiness = async () => {
+  try {
+    const farms = await Farm.find().populate("foodZoneId");
+    return farms;
+  } catch (err) {
+    throw new Error(err);
+  }
+};
+
 exports.allFarms = async (category) => {
   try {
     const farms = await Farm.find({ category: category });

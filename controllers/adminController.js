@@ -1,4 +1,5 @@
 const bcrypt = require("bcryptjs");
+const Users = require("../models/users");
 const adminServices = require("../services/adminServices");
 const courierServices = require("../services/courierServices");
 const orderServices = require("../services/orderServices");
@@ -675,6 +676,15 @@ exports.postCreateFarm = async (req, res, next) => {
   }
 };
 
+exports.getAllBusinessFirms = async (req, res, next) => {
+  try {
+    const farms = await adminServices.allBusiness();
+    res.status(200).json({ success: true, farms });
+  } catch (err) {
+    next(err);
+  }
+};
+
 exports.getFarms = async (req, res, next) => {
   try {
     const category = req.query.category;
@@ -805,6 +815,15 @@ exports.deleteItem = async (req, res, next) => {
 };
 
 // Reports Controller
+
+exports.getAllBsinessOwners = async (req, res, next) => {
+  try {
+    const users = await Users.find({ role: "farmer" });
+    res.status(200).json({ success: true, businessOwners: users });
+  } catch (err) {
+    next(err);
+  }
+};
 
 exports.getBusinessOwnerSales = async (req, res, next) => {
   try {
