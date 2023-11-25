@@ -94,11 +94,27 @@ exports.findOrder = async (orderId) => {
   }
 };
 
-exports.findClientOrders = async (clientId) => {
+exports.findClientOrders = async (clientId, page) => {
   try {
-    const orders = await Order.find({ clientId: clientId }).sort({
-      createdAt: -1,
-    });
+    // const ITEMS_PER_PAGE = 10;
+    // let totalItems;
+    // const ordersCount = await Order.find().countDocuments();
+    // totalItems = ordersCount;
+
+    const orders = await Order.find({ clientId: clientId })
+      .sort({
+        createdAt: -1,
+      });
+    // data = {
+    //   orders: orders,
+    //   itemsPerPage: ITEMS_PER_PAGE,
+    //   currentPage: page,
+    //   hasNextPage: page * ITEMS_PER_PAGE < totalItems,
+    //   nextPage: page + 1,
+    //   hasPreviousPage: page > 1,
+    //   previousPage: page - 1,
+    //   lastPage: Math.ceil(totalItems / ITEMS_PER_PAGE),
+    // };
     return orders;
   } catch (err) {
     throw new Error(err);

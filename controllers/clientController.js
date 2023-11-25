@@ -224,6 +224,7 @@ exports.getClientOrder = async (req, res, next) => {
 
 exports.getClientOrders = async (req, res, next) => {
   const clientId = req.clientId;
+  //const page = +req.query.page;
   try {
     const orders = await orderServices.findClientOrders(clientId);
     if (!orders) {
