@@ -147,6 +147,14 @@ exports.getLocalDate = (date) => {
   return localDate;
 };
 
+exports.getEndOfDate = (date) => {
+  const newDate = new Date(date);
+  const localDate = new Date(
+    newDate.getTime() - newDate.getTimezoneOffset() * 60000
+  );
+  return localDate.setHours(23, 59, 0, 0);
+};
+
 exports.getCourierCache = async (courierId) => {
   try {
     const cacheDB = await rdsClient.getRedisConnection();
@@ -291,7 +299,6 @@ exports.createCouriersOrdersReport = async (orders) => {
     for (let order of orders) {
       let orderArr = [];
       for (let key in order) {
-        console.log(key);
         if (key === "courierId") {
           orderArr.push(order[key].courierName, order[key].username);
         } else {
@@ -408,7 +415,9 @@ exports.createCouriersOrdersReport = async (orders) => {
     const ordersRows = sheet.getRows(1, orders.length + 1);
     ordersRows.forEach((row, rowIndex) => {
       row.eachCell({ includeEmpty: true }, function (cell, colNumber) {
-        cell.alignment = { horizontal: "center" };
+        if (cell) {
+          cell.alignment = { horizontal: "center" };
+        }
       });
     });
     await workbook.xlsx.writeFile(filePath);

@@ -101,6 +101,7 @@ const orderSchema = new Schema(
         itemName: { type: String },
         itemPrice: { type: Number },
         quantity: { type: Number },
+        itemUnit: {type: String},
       },
     ],
     notes: {

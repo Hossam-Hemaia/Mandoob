@@ -101,10 +101,9 @@ exports.findClientOrders = async (clientId, page) => {
     // const ordersCount = await Order.find().countDocuments();
     // totalItems = ordersCount;
 
-    const orders = await Order.find({ clientId: clientId })
-      .sort({
-        createdAt: -1,
-      });
+    const orders = await Order.find({ clientId: clientId }).sort({
+      createdAt: -1,
+    });
     // data = {
     //   orders: orders,
     //   itemsPerPage: ITEMS_PER_PAGE,
@@ -280,8 +279,8 @@ exports.getOrdersByServiceType = async (serviceType) => {
 
 exports.getBusinessOrders = async (businessOwnerId, dateFrom, dateTo) => {
   try {
-    const startDate = new Date(dateFrom);
-    const endDate = new Date(dateTo);
+    const startDate = utilities.getLocalDate(dateFrom);
+    const endDate = utilities.getEndOfDate(dateTo);
     const businessOwner = await Farm.findById(businessOwnerId);
     const orders = await Order.find(
       {
@@ -313,8 +312,8 @@ exports.getBusinessOrders = async (businessOwnerId, dateFrom, dateTo) => {
 
 exports.getCouriersOrders = async (dateFrom, dateTo) => {
   try {
-    const startDate = new Date(dateFrom);
-    const endDate = new Date(dateTo);
+    const startDate = utilities.getLocalDate(dateFrom);
+    const endDate = utilities.getEndOfDate(dateTo);
     const orders = await Order.find(
       {
         orderDate: { $gte: startDate, $lte: endDate },
@@ -323,6 +322,7 @@ exports.getCouriersOrders = async (dateFrom, dateTo) => {
         fromPoint: 0,
         toPoint: 0,
         clientId: 0,
+        rejectionReason: 0,
         createdAt: 0,
         updatedAt: 0,
         __v: 0,
