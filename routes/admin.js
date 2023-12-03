@@ -1,8 +1,11 @@
 const express = require("express");
 const adminController = require("../controllers/adminController");
 const isAuth = require("../validator/isAuth");
+const rateLimit = require("express-rate-limit");
 
 const router = express.Router();
+
+const limiter = rateLimit({ windowMs: 30 * 60 * 1000, max: 10 });
 
 // USERS ROUTES //
 
@@ -223,5 +226,13 @@ router.get(
   isAuth.farmerIsAuth,
   adminController.getBusinessOwnerSales
 );
+
+router.post(
+  "/client/suggestion",
+  limiter,
+  adminController.postClientSuggestion
+);
+
+router.get("/suggestions", isAuth.adminIsAuth, adminController.getSuggestions);
 
 module.exports = router;

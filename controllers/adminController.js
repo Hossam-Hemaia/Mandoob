@@ -1,5 +1,6 @@
 const bcrypt = require("bcryptjs");
 const Users = require("../models/users");
+const Suggestion = require("../models/suggestion");
 const adminServices = require("../services/adminServices");
 const courierServices = require("../services/courierServices");
 const orderServices = require("../services/orderServices");
@@ -851,6 +852,43 @@ exports.getCouriersReport = async (req, res, next) => {
     const report = await utilities.createCouriersOrdersReport(orders);
     const reportUrl = `${req.protocol}s://${req.get("host")}/files/${report}`;
     res.status(200).json({ success: true, url: reportUrl });
+  } catch (err) {
+    next(err);
+  }
+};
+
+// Client Suggestion
+
+exports.postClientSuggestion = async (req, res, next) => {
+  try {
+    const { fullName, email, subject, message } = req.body;
+    const suggestion = new Suggestion({
+      fullName,
+      email,
+      subject,
+      message,
+    });
+    await suggestion.save();
+    if (!suggestion) {
+      const error = new Error("message not sent!");
+      error.statusCode = 422;
+      throw error;
+    }
+    res.status(201).json({ success: true, message: "message sent!" });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.getSuggestions = async (req, res, next) => {
+  try {
+    const today = new Date();
+    const lastMonth = new Date(today);
+    lastMonth.setMonth(today.getMonth() - 1);
+    const suggestions = await Suggestion.find({
+      createdAt: { $gte: lastMonth, $lte: today },
+    }).sort({ createdAt: -1 });
+    res.status(200).json({ success: true, suggestions });
   } catch (err) {
     next(err);
   }
