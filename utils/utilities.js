@@ -168,7 +168,7 @@ exports.getCourierCache = async (courierId) => {
 
 exports.sendSms = async (phoneNumber, code) => {
   try {
-    let senderId;
+    let senderId = process.env.sms_senderId;
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -181,7 +181,7 @@ exports.sendSms = async (phoneNumber, code) => {
     const senderIdUrl = "https://www.kwtsms.com/API/senderid/";
     const response = await axios.post(senderIdUrl, senderIdData, config);
     if (response.data.result === "OK") {
-      senderId = response.data.senderid[0];
+      senderId = process.env.sms_senderId; //response.data.senderid[0];
     }
     const messageData = {
       username: process.env.sms_api_username,
