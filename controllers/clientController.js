@@ -291,7 +291,8 @@ exports.getFarmItems = async (req, res, next) => {
 
 exports.getFoodZoneLocation = async (req, res, next) => {
   try {
-    const location = await utilities.getFarmsFoodPoint();
+    const zoneId = req.query.zoneId;
+    const location = await utilities.getFarmsFoodPoint(zoneId);
     res.status(200).json({ success: true, location });
   } catch (err) {
     next(err);

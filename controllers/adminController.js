@@ -619,11 +619,16 @@ exports.getPricesList = async (req, res, next) => {
 
 exports.createFoodZone = async (req, res, next) => {
   try {
-    const { zoneName, location } = req.body;
+    const { zoneName, lat, lng } = req.body;
+    const zoneLocation = {
+      lat,
+      lng,
+    };
     const foodZoneData = {
       zoneName,
-      location,
+      location: zoneLocation,
     };
+    console.log(foodZoneData);
     const foodZone = await adminServices.createFoodZone(foodZoneData);
     if (foodZone) {
       return res

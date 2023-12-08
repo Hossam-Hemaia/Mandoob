@@ -26,9 +26,9 @@ exports.getDeliveryRoute = async (locations, instructions) => {
   return data;
 };
 
-exports.getFarmsFoodPoint = async () => {
+exports.getFarmsFoodPoint = async (zoneId) => {
   try {
-    const foodZone = await FoodZone.findOne();
+    const foodZone = await FoodZone.findById(zoneId);
     return foodZone.location;
   } catch (err) {
     throw new Error(err);

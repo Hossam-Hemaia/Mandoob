@@ -8,8 +8,8 @@ const foodZoneSchema = new Schema(
       required: true,
     },
     location: {
-      lat: { type: Number },
-      lng: { type: Number },
+      lat: { type: Number, required: true },
+      lng: { type: Number, required: true },
     },
   },
   { timestamps: true }
