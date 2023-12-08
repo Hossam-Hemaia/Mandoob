@@ -663,10 +663,18 @@ exports.deleteFoodZone = async (req, res, next) => {
 exports.postCreateFarm = async (req, res, next) => {
   try {
     const { farmName, foodZoneId, category } = req.body;
+    const image = req.files[0];
+    let imageUrl;
+    if (image) {
+      imageUrl = `${req.protocol}s://${req.get("host")}/${image.path}`;
+    } else {
+      imageUrl = "";
+    }
     const farmData = {
       farmName,
       foodZoneId,
       category,
+      imageUrl,
     };
     const farm = await adminServices.createFarm(farmData);
     if (farm) {

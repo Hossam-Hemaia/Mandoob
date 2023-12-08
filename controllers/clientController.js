@@ -33,8 +33,11 @@ exports.getDeliveryData = async (req, res, next) => {
     const distance = data.paths[0].distance / 1000;
     const estimatedTime = data.paths[0].time / 1000 / 60;
     const pricing = await adminServices.getPricing(pricingCategory);
+    console.log(pricing, fromArea, toArea, distance);
     let price;
-    if (distance <= 18) {
+    if (fromArea.zoneName === "El Abdaly" || fromArea.zoneName === "wafrah") {
+      price = 2.5;
+    } else if (distance <= 18) {
       price = pricing.minimumPrice;
     } else {
       let remainingDistance = distance - 18;

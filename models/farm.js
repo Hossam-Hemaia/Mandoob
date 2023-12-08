@@ -14,6 +14,9 @@ const farmSchema = new Schema(
     category: {
       type: String,
     },
+    imageUrl: {
+      type: String,
+    },
   },
   { timestamps: true }
 );
