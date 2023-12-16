@@ -47,7 +47,7 @@ exports.checkShiftTime = (
   if (
     currentHour >= startingHour &&
     currentHour <= endingHour &&
-    currentMinute >= startingMinute &&
+    /*currentMinute >= startingMinute &&*/
     currentMinute <= endingMinute
   ) {
     return true;

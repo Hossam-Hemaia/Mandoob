@@ -310,26 +310,47 @@ exports.getBusinessOrders = async (businessOwnerId, dateFrom, dateTo) => {
   }
 };
 
-exports.getCouriersOrders = async (dateFrom, dateTo) => {
+exports.getCouriersOrders = async (dateFrom, dateTo, couriersIds = []) => {
   try {
     const startDate = utilities.getLocalDate(dateFrom);
     const endDate = utilities.getEndOfDate(dateTo);
-    const orders = await Order.find(
-      {
-        orderDate: { $gte: startDate, $lte: endDate },
-      },
-      {
-        fromPoint: 0,
-        toPoint: 0,
-        clientId: 0,
-        rejectionReason: 0,
-        createdAt: 0,
-        updatedAt: 0,
-        __v: 0,
-      }
-    )
-      .populate("courierId")
-      .lean();
+    let orders;
+    if (couriersIds.length > 0) {
+      orders = await Order.find(
+        {
+          orderDate: { $gte: startDate, $lte: endDate },
+          courierId: { $in: couriersIds },
+        },
+        {
+          fromPoint: 0,
+          toPoint: 0,
+          clientId: 0,
+          rejectionReason: 0,
+          createdAt: 0,
+          updatedAt: 0,
+          __v: 0,
+        }
+      )
+        .populate("courierId")
+        .lean();
+    } else {
+      orders = await Order.find(
+        {
+          orderDate: { $gte: startDate, $lte: endDate },
+        },
+        {
+          fromPoint: 0,
+          toPoint: 0,
+          clientId: 0,
+          rejectionReason: 0,
+          createdAt: 0,
+          updatedAt: 0,
+          __v: 0,
+        }
+      )
+        .populate("courierId")
+        .lean();
+    }
     return orders;
   } catch (err) {
     throw new Error(err);

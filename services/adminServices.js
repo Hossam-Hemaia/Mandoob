@@ -7,6 +7,7 @@ const FoodZone = require("../models/foodZone");
 const Farm = require("../models/farm");
 const Item = require("../models/item");
 const Farmer = require("../models/farmer");
+const Supervisor = require("../models/supervisors");
 const rdsClient = require("../config/redisConnect");
 
 // USERS SERVICES //
@@ -16,6 +17,8 @@ exports.createUser = async (userData) => {
     let user;
     if (userData.role === "farmer") {
       user = new Farmer(userData);
+    } else if (userData.role === "user") {
+      user = new Supervisor(userData);
     } else {
       user = new User({
         employeeName: userData.employeeName,
@@ -25,7 +28,6 @@ exports.createUser = async (userData) => {
         password: userData.password,
       });
     }
-    console.log(user);
     await user.save();
     return user;
   } catch (err) {

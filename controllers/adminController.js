@@ -9,8 +9,15 @@ const utilities = require("../utils/utilities");
 // USERS CONTROLLERS //
 
 exports.postCreateUser = async (req, res, next) => {
-  const { employeeName, phoneNumber, role, password, confirmPassword, farmId } =
-    req.body;
+  const {
+    employeeName,
+    phoneNumber,
+    role,
+    password,
+    confirmPassword,
+    farmId,
+    couriersIds,
+  } = req.body;
   try {
     if (password !== confirmPassword) {
       const error = new Error("password does not match!");
@@ -30,6 +37,7 @@ exports.postCreateUser = async (req, res, next) => {
       role,
       password: hashedPassword,
       farmId,
+      couriersIds,
     };
     const newUser = await adminServices.createUser(userData);
     if (!newUser) {
@@ -861,7 +869,20 @@ exports.getCouriersReport = async (req, res, next) => {
   try {
     const dateFrom = req.query.dateFrom;
     const dateTo = req.query.dateTo;
-    const orders = await orderServices.getCouriersOrders(dateFrom, dateTo);
+    let orders;
+    if (req.userId) {
+      const user = await Users.findById(req.userId);
+      if (!user) {
+        throw new Error("insuffecient credentials!");
+      }
+      orders = await orderServices.getCouriersOrders(
+        dateFrom,
+        dateTo,
+        user.couriersIds
+      );
+    } else {
+      orders = await orderServices.getCouriersOrders(dateFrom, dateTo);
+    }
     const report = await utilities.createCouriersOrdersReport(orders);
     const reportUrl = `${req.protocol}s://${req.get("host")}/files/${report}`;
     res.status(200).json({ success: true, url: reportUrl });

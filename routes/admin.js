@@ -222,6 +222,12 @@ router.get(
 );
 
 router.get(
+  "/user/couriers/orders",
+  isAuth.supervisorIsAuth,
+  adminController.getCouriersReport
+);
+
+router.get(
   "/business/owner/report",
   isAuth.farmerIsAuth,
   adminController.getBusinessOwnerSales
