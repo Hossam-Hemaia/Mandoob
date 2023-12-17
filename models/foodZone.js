@@ -11,6 +11,10 @@ const foodZoneSchema = new Schema(
       lat: { type: Number, required: true },
       lng: { type: Number, required: true },
     },
+    zonePrice: {
+      type: Number,
+      default: 0,
+    },
   },
   { timestamps: true }
 );

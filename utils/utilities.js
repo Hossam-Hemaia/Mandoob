@@ -29,7 +29,7 @@ exports.getDeliveryRoute = async (locations, instructions) => {
 exports.getFarmsFoodPoint = async (zoneId) => {
   try {
     const foodZone = await FoodZone.findById(zoneId);
-    return foodZone.location;
+    return foodZone;
   } catch (err) {
     throw new Error(err);
   }

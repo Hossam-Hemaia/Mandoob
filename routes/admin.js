@@ -6,9 +6,9 @@ const rateLimit = require("express-rate-limit");
 const router = express.Router();
 
 const limiter = rateLimit({ windowMs: 30 * 60 * 1000, max: 10 });
-
-// USERS ROUTES //
-
+/*************************************
+ * USERS ROUTES
+ *************************************/
 router.post("/create/user", isAuth.adminIsAuth, adminController.postCreateUser);
 
 router.get("/all/users", isAuth.adminIsAuth, adminController.getAllUsers);
@@ -18,9 +18,9 @@ router.get("/get/user", isAuth.adminIsAuth, adminController.getUser);
 router.put("/edit/user", isAuth.adminIsAuth, adminController.putEditUser);
 
 router.delete("/delete/user", isAuth.adminIsAuth, adminController.deleteUser);
-
-// COURIER ROUTES //
-
+/*************************************
+ * COURIERS ROUTES
+ *************************************/
 router.post(
   "/create/courier",
   isAuth.adminIsAuth,
@@ -62,9 +62,9 @@ router.get(
   isAuth.adminIsAuth,
   adminController.getAvailableCouriers
 );
-
-// AREAS ROUTES //
-
+/*************************************
+ * AREAS ROUTES
+ *************************************/
 router.post("/create/area", isAuth.adminIsAuth, adminController.postCreateArea);
 
 router.get("/get/areas", isAuth.adminIsAuth, adminController.getAreas);
@@ -78,9 +78,9 @@ router.get(
   isAuth.adminIsAuth,
   adminController.getAdjustedAreas
 );
-
-// SHIFTS ROUTES //
-
+/*************************************
+ * SHIFTS ROUTES
+ *************************************/
 router.post(
   "/create/shift",
   isAuth.adminIsAuth,
@@ -94,9 +94,9 @@ router.get("/get/shift", isAuth.adminIsAuth, adminController.getShift);
 router.put("/edit/shift", isAuth.adminIsAuth, adminController.editShift);
 
 router.delete("/delete/shift", isAuth.adminIsAuth, adminController.deleteShift);
-
-// ORDERS ROUTES //
-
+/*************************************
+ * ORDERS ROUTES
+ *************************************/
 router.get("/all/orders", isAuth.adminIsAuth, adminController.getAllOrders);
 
 router.get(
@@ -116,17 +116,17 @@ router.get(
   isAuth.adminIsAuth,
   adminController.getQueuedOrders
 );
-
-// PRICING ROUTES //
-
+/*************************************
+ * GENERAL PRICING ROUTES
+ *************************************/
 router.post("/set/pricing", isAuth.adminIsAuth, adminController.postSetPricing);
 
 router.get("/get/pricing", adminController.getPrices);
 
 router.get("/prices/list", isAuth.adminIsAuth, adminController.getPricesList);
-
-// Food Zone Routes //
-
+/*************************************
+ * FOOD ZONE ROUTES
+ *************************************/
 router.post(
   "/create/food/zone",
   isAuth.adminIsAuth,
@@ -140,9 +140,9 @@ router.delete(
   isAuth.adminIsAuth,
   adminController.deleteFoodZone
 );
-
-// Farm Routes //
-
+/*************************************
+ * FARMS/SHOPS ROUTES
+ *************************************/
 router.post("/create/farm", isAuth.adminIsAuth, adminController.postCreateFarm);
 
 router.get(
@@ -154,9 +154,9 @@ router.get(
 router.get("/farm/detail", isAuth.adminIsAuth, adminController.getFarm);
 
 router.delete("/delete/farm", isAuth.adminIsAuth, adminController.deleteFarm);
-
-// Farm Items Routes //
-
+/*************************************
+ * FARMS/SHOPS ITEMS ROUTES
+ *************************************/
 router.post(
   "/create/farm/item",
   isAuth.adminIsAuth,
@@ -200,9 +200,9 @@ router.delete(
   isAuth.farmerIsAuth,
   adminController.deleteItem
 );
-
-// reports
-
+/*************************************
+ * REPORTS ROUTES
+ *************************************/
 router.get(
   "/get/business/owners",
   isAuth.adminIsAuth,

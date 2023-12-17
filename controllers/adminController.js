@@ -5,9 +5,9 @@ const adminServices = require("../services/adminServices");
 const courierServices = require("../services/courierServices");
 const orderServices = require("../services/orderServices");
 const utilities = require("../utils/utilities");
-
-// USERS CONTROLLERS //
-
+/*************************************
+ * USERS CONTROLLERS
+ *************************************/
 exports.postCreateUser = async (req, res, next) => {
   const {
     employeeName,
@@ -86,9 +86,16 @@ exports.getUser = async (req, res, next) => {
 };
 
 exports.putEditUser = async (req, res, next) => {
-  const { employeeName, phoneNumber, role, userId, farmId } = req.body;
+  const { employeeName, phoneNumber, role, userId, farmId, couriersIds } =
+    req.body;
   try {
-    const updatedData = { employeeName, phoneNumber, role, farmId };
+    const updatedData = {
+      employeeName,
+      phoneNumber,
+      role,
+      farmId,
+      couriersIds,
+    };
     const updated = await adminServices.editUser(userId, updatedData);
     if (!updated) {
       const error = new Error("User not found!");
@@ -112,8 +119,9 @@ exports.deleteUser = async (req, res, next) => {
     next(err);
   }
 };
-
-// COURIER CONTROLLERS //
+/*************************************
+ * COURIERS CONTROLLERS
+ *************************************/
 exports.postCreateCourier = async (req, res, next) => {
   const {
     courierName,
@@ -234,7 +242,7 @@ exports.puteditCourier = async (req, res, next) => {
     next(err);
   }
 };
-// Deleting Courier
+
 exports.deleteCourier = async (req, res, next) => {
   const courierId = req.query.courierId;
   try {
@@ -283,9 +291,9 @@ exports.getCourierOrders = async (req, res, next) => {
     next(err);
   }
 };
-
-// AREA CONTROLLERS //
-
+/*************************************
+ * AREAS CONTROLLERS
+ *************************************/
 exports.postCreateArea = async (req, res, next) => {
   const { zoneName, areaName, areaPolygon } = req.body;
   try {
@@ -351,9 +359,9 @@ exports.getAdjustedAreas = async (req, res, next) => {
     next(err);
   }
 };
-
-// SHIFT CONTROLLERS //
-
+/*************************************
+ * SHIFTS CONTROLLERS
+ *************************************/
 exports.postCreateShift = async (req, res, next) => {
   const { shiftHours, startingHour, startingMinute } = req.body;
   try {
@@ -442,9 +450,9 @@ exports.deleteShift = async (req, res, next) => {
     next(err);
   }
 };
-
-// ORDER CONTROLLERS //
-
+/*************************************
+ * ORDERS CONTROLLERS
+ *************************************/
 exports.getAllOrders = async (req, res, next) => {
   try {
     const ITEMS_PER_PAGE = 200;
@@ -582,9 +590,9 @@ exports.getAvailableCouriers = async (req, res, next) => {
     next(err);
   }
 };
-
-// PRICING CONTROLLERS //
-
+/*************************************
+ * PRICING CONTROLLERS
+ *************************************/
 exports.postSetPricing = async (req, res, next) => {
   const { pricingCategory, pricePerKilometer, minimumPrice, fridgePrice } =
     req.body;
@@ -622,12 +630,12 @@ exports.getPricesList = async (req, res, next) => {
     next(err);
   }
 };
-
-// Food Zone Controllers //
-
+/*************************************
+ * FOOD/SHOPS ZONE CONTROLLERS
+ *************************************/
 exports.createFoodZone = async (req, res, next) => {
   try {
-    const { zoneName, lat, lng } = req.body;
+    const { zoneName, lat, lng, zonePrice } = req.body;
     const zoneLocation = {
       lat,
       lng,
@@ -635,8 +643,8 @@ exports.createFoodZone = async (req, res, next) => {
     const foodZoneData = {
       zoneName,
       location: zoneLocation,
+      zonePrice,
     };
-    console.log(foodZoneData);
     const foodZone = await adminServices.createFoodZone(foodZoneData);
     if (foodZone) {
       return res
@@ -670,9 +678,9 @@ exports.deleteFoodZone = async (req, res, next) => {
     next(err);
   }
 };
-
-// Farm Controllers //
-
+/*************************************
+ * FARMS/SHOPS CONTROLLERS
+ *************************************/
 exports.postCreateFarm = async (req, res, next) => {
   try {
     const { farmName, foodZoneId, category } = req.body;
@@ -736,13 +744,20 @@ exports.deleteFarm = async (req, res, next) => {
     next(err);
   }
 };
-
-// Farm Items Controllers //
-
+/*************************************
+ * ITEMS CONTROLLERS
+ *************************************/
 exports.postCreateFarmItem = async (req, res, next) => {
   try {
-    const { itemName, pricingSystem, itemPrice, farmId, itemBlocked } =
-      req.body;
+    const {
+      itemName,
+      pricingSystem,
+      itemPrice,
+      farmId,
+      itemBlocked,
+      sizes,
+      colors,
+    } = req.body;
     let itemImage;
     if (req.files.length > 0) {
       const image = req.files[0];
@@ -757,6 +772,8 @@ exports.postCreateFarmItem = async (req, res, next) => {
       itemImage,
       farmId,
       itemBlocked,
+      sizes,
+      colors,
     };
     const item = await adminServices.createItem(itemData);
     if (item) {
@@ -798,8 +815,16 @@ exports.getItem = async (req, res, next) => {
 
 exports.putEditFarmItem = async (req, res, next) => {
   try {
-    const { itemName, pricingSystem, itemPrice, farmId, itemBlocked, itemId } =
-      req.body;
+    const {
+      itemName,
+      pricingSystem,
+      itemPrice,
+      farmId,
+      itemBlocked,
+      sizes,
+      colors,
+      itemId,
+    } = req.body;
     let itemImage = "";
     if (req.files.length > 0) {
       const image = req.files[0];
@@ -814,6 +839,8 @@ exports.putEditFarmItem = async (req, res, next) => {
       itemImage,
       farmId,
       itemBlocked,
+      sizes,
+      colors,
     };
     const updated = await adminServices.editItem(itemId, itemData);
     if (updated) {
@@ -835,9 +862,9 @@ exports.deleteItem = async (req, res, next) => {
     next(err);
   }
 };
-
-// Reports Controller
-
+/*************************************
+ * REPORTS CONTROLLERS
+ *************************************/
 exports.getAllBsinessOwners = async (req, res, next) => {
   try {
     const users = await Users.find({ role: "farmer" });
@@ -890,9 +917,9 @@ exports.getCouriersReport = async (req, res, next) => {
     next(err);
   }
 };
-
-// Client Suggestion
-
+/*************************************
+ * SUGGESSTIONS CONTROLLERS
+ *************************************/
 exports.postClientSuggestion = async (req, res, next) => {
   try {
     const { fullName, email, subject, message } = req.body;

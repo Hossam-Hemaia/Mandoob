@@ -11,6 +11,7 @@ exports.getDeliveryData = async (req, res, next) => {
     toPointLat,
     toPointLng,
     pricingCategory,
+    zonePrice,
   } = req.query;
   try {
     const fromPoint = { lat: fromPointLat, lng: fromPointLng };
@@ -33,10 +34,9 @@ exports.getDeliveryData = async (req, res, next) => {
     const distance = data.paths[0].distance / 1000;
     const estimatedTime = data.paths[0].time / 1000 / 60;
     const pricing = await adminServices.getPricing(pricingCategory);
-    console.log(pricing, fromArea, toArea, distance);
     let price;
-    if (fromArea.zoneName === "El Abdaly" || fromArea.zoneName === "wafrah") {
-      price = 2.5;
+    if (zonePrice && zonePrice > 0) {
+      price = zonePrice;
     } else if (distance <= 18) {
       price = pricing.minimumPrice;
     } else {
@@ -292,8 +292,12 @@ exports.getFarmItems = async (req, res, next) => {
 exports.getFoodZoneLocation = async (req, res, next) => {
   try {
     const zoneId = req.query.zoneId;
-    const location = await utilities.getFarmsFoodPoint(zoneId);
-    res.status(200).json({ success: true, location });
+    const foodZone = await utilities.getFarmsFoodPoint(zoneId);
+    res.status(200).json({
+      success: true,
+      location: foodZone.location,
+      zonePrice: foodZone.zonePrice,
+    });
   } catch (err) {
     next(err);
   }

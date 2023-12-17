@@ -101,7 +101,9 @@ const orderSchema = new Schema(
         itemName: { type: String },
         itemPrice: { type: Number },
         quantity: { type: Number },
-        itemUnit: {type: String},
+        itemUnit: { type: String },
+        size: { type: String, default: "" },
+        color: { type: String, default: "" },
       },
     ],
     notes: {

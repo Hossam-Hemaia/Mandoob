@@ -9,9 +9,9 @@ const Item = require("../models/item");
 const Farmer = require("../models/farmer");
 const Supervisor = require("../models/supervisors");
 const rdsClient = require("../config/redisConnect");
-
-// USERS SERVICES //
-
+/*************************************
+ * USERS SERVICES
+ *************************************/
 exports.createUser = async (userData) => {
   try {
     let user;
@@ -95,6 +95,10 @@ exports.editUser = async (userId, updatedData) => {
       ? (user.farmId =
           updatedData.farmId !== "" ? updatedData.farmId : user.farmId)
       : user.farmId;
+    user.couriersIds =
+      updatedData.couriersIds?.length > 0
+        ? updatedData.couriersIds
+        : user.couriersIds;
     await user.save();
     return true;
   } catch (err) {
@@ -110,9 +114,9 @@ exports.deleteUser = async (userId) => {
     throw new Error(err);
   }
 };
-
-// COURIER SERVICES //
-
+/*************************************
+ * COURIERS SERVICES
+ *************************************/
 exports.getLastCourierUsername = async () => {
   try {
     const couriers = await Courier.find({}).sort({ username: -1 });
@@ -137,9 +141,9 @@ exports.createCourier = async (courierData) => {
     throw new Error(err);
   }
 };
-
-// AREAS SERVICES //
-
+/*************************************
+ * AREAS SERVICES
+ *************************************/
 exports.createArea = async (areaData) => {
   try {
     const area = new Area(areaData);
@@ -195,9 +199,9 @@ exports.cachedAreas = async () => {
     throw new Error(err);
   }
 };
-
-// SHIFTS SERVICES //
-
+/*************************************
+ * SHIFTS SERVICES
+ *************************************/
 exports.createShift = async (shiftData) => {
   try {
     const shift = new Shift(shiftData);
@@ -255,9 +259,9 @@ exports.deleteShift = async (shiftId) => {
     throw new Error(err);
   }
 };
-
-// PRICING SERVICES //
-
+/*************************************
+ * PRICING SERVICES
+ *************************************/
 exports.SetPricing = async (pricingData) => {
   try {
     let price = await Pricing.findOne({
@@ -307,9 +311,9 @@ exports.pricesList = async () => {
     throw new Error(err);
   }
 };
-
-// Food Zone Services //
-
+/*************************************
+ * FOOD/SHOPS ZONE SERVICES
+ *************************************/
 exports.createFoodZone = async (foodZoneData) => {
   try {
     const foodZone = new FoodZone(foodZoneData);
@@ -337,9 +341,9 @@ exports.deleteFoodZone = async (foodZoneId) => {
     throw new Error(err);
   }
 };
-
-// Farms Services //
-
+/*************************************
+ * FOOD/SHOPS SERVICES
+ *************************************/
 exports.createFarm = async (farmData) => {
   try {
     const farm = new Farm(farmData);
@@ -388,9 +392,9 @@ exports.deleteFarm = async (farmId) => {
     throw new Error(err);
   }
 };
-
-// Farm Item Services //
-
+/*************************************
+ * FOOD/SHOPS ITEM SERVICES
+ *************************************/
 exports.createItem = async (itemData) => {
   try {
     const item = new Item(itemData);

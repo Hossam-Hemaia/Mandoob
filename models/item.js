@@ -24,6 +24,8 @@ const itemSchema = new Schema(
       type: Boolean,
       default: false,
     },
+    sizes: [{ type: String }],
+    colors: [{ type: String }],
   },
   { timestamps: true }
 );
